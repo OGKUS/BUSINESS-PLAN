@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prévisionnel — Forfaits Corpo</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: #F5F4F0;
+  color: #1A1A1A;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+header {
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 22px;
+  font-weight: 500;
+  color: #1A1A1A;
+  margin-bottom: 4px;
+}
+header p {
+  font-size: 13px;
+  color: #888780;
+}
+
+.card {
+  background: #fff;
+  border: 0.5px solid #D3D1C7;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #888780;
+  margin-bottom: 1rem;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+}
+
+.ctrl label {
+  display: block;
+  font-size: 12px;
+  color: #5F5E5A;
+  margin-bottom: 6px;
+}
+
+.ctrl input[type=range] {
+  width: 100%;
+  accent-color: #1A1A1A;
+  height: 4px;
+  cursor: pointer;
+}
+
+.ctrl .val {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 6px;
+  color: #1A1A1A;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 1.25rem;
+}
+
+.metric {
+  background: #F5F4F0;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.metric .lbl { font-size: 11px; color: #888780; margin-bottom: 4px; }
+.metric .num { font-size: 20px; font-weight: 500; }
+.metric .sub { font-size: 11px; color: #B4B2A9; margin-top: 2px; }
+.green { color: #27500A; }
+.blue  { color: #0C447C; }
+.amber { color: #633806; }
+.red   { color: #791F1F; }
+.gray  { color: #444441; }
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+@media (max-width: 640px) { .charts-grid { grid-template-columns: 1fr; } }
+
+.chart-card { background: #fff; border: 0.5px solid #D3D1C7; border-radius: 12px; padding: 1.25rem; }
+.chart-title { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+.chart-sub { font-size: 11px; color: #888780; margin-bottom: 1rem; }
+.chart-wrap { position: relative; width: 100%; height: 220px; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: .75rem; }
+.legend span { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #5F5E5A; }
+.dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th { text-align: left; padding: 7px 10px; font-weight: 500; color: #888780; border-bottom: 0.5px solid #D3D1C7; font-size: 12px; }
+tbody td { padding: 7px 10px; border-bottom: 0.5px solid #EDECE8; }
+tbody tr:last-child td { border-bottom: none; font-weight: 500; background: #F5F4F0; border-radius: 4px; }
+.r { text-align: right; }
+
+.note {
+  font-size: 11px;
+  color: #B4B2A9;
+  line-height: 1.6;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 0.5px solid #EDECE8;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: .75rem;
+}
+@media (max-width: 540px) { .compare-grid { grid-template-columns: 1fr; } }
+
+.compare-card {
+  border: 0.5px solid #D3D1C7;
+  border-radius: 8px;
+  padding: 1rem;
+}
+.compare-card h3 { font-size: 13px; font-weight: 500; margin-bottom: .75rem; }
+.compare-row { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; color: #5F5E5A; }
+.compare-row .v { font-weight: 500; color: #1A1A1A; }
+.compare-total { display: flex; justify-content: space-between; font-size: 13px; font-weight: 500; padding: 6px 0 0; margin-top: 4px; border-top: 0.5px solid #D3D1C7; }
+.badge { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 500; margin-left: 6px; }
+.badge-green { background: #EAF3DE; color: #27500A; }
+.badge-blue  { background: #E6F1FB; color: #0C447C; }
+
+footer { text-align: center; font-size: 11px; color: #B4B2A9; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>Prévisionnel — Forfaits corpo</h1>
+    <p>Marcus Giraud × SRG Films · Document interne · 2026–2027</p>
+  </header>
+
+  <div class="card">
+    <div class="section-label">Paramètres</div>
+    <div class="controls">
+      <div class="ctrl">
+        <label>Forfaits Corpo Essentiel / mois</label>
+        <input type="range" min="1" max="8" value="3" step="1" id="sl-e">
+        <span class="val" id="v-e">3 / mois</span>
+      </div>
+      <div class="ctrl">
+        <label>Forfaits Corpo Premium / mois</label>
+        <input type="range" min="0" max="4" value="1" step="1" id="sl-p">
+        <span class="val" id="v-p">1 / mois</span>
+      </div>
+      <div class="ctrl">
+        <label>Répartition Marcus / SRG</label>
+        <input type="range" min="0" max="100" value="60" step="10" id="sl-s">
+        <span class="val" id="v-s">60% Marcus · 40% SRG</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="metrics" id="metrics"></div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">Marcus Giraud — micro-entreprise</div>
+      <div class="chart-sub">Répartition mensuelle</div>
+      <div class="legend">
+        <span><span class="dot" style="background:#27500A"></span>Net</span>
+        <span><span class="dot" style="background:#639922"></span>Charges</span>
+        <span><span class="dot" style="background:#B4B2A9"></span>Matos</span>
+      </div>
+      <div class="chart-wrap"><canvas id="cM"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">SRG Films — SASU</div>
+      <div class="chart-sub">Répartition mensuelle</div>
+      <div class="legend">
+        <span><span class="dot" style="background:#085041"></span>Net Sébastien</span>
+        <span><span class="dot" style="background:#1D9E75"></span>Charges + IS</span>
+        <span><span class="dot" style="background:#9FE1CB"></span>TVA État</span>
+      </div>
+      <div class="chart-wrap"><canvas id="cS"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Détail mensuel moyen</div>
+    <table id="tbl"></table>
+    <div class="note" id="note"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Comparaison — Forfait Corpo Essentiel 3 200 € HT</div>
+    <p style="font-size:12px;color:#5F5E5A;margin-bottom:.75rem">Pour un même forfait à 3 200 € HT, voici ce que ça représente selon la structure qui facture.</p>
+    <div class="compare-grid" id="compare"></div>
+  </div>
+
+</div>
+
+<footer>Document confidentiel · Marcus Giraud × SRG Films · 2026</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+let cM, cS;
+const f = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+const months = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+
+function update() {
+  const ne = +document.getElementById('sl-e').value;
+  const np = +document.getElementById('sl-p').value;
+  const split = +document.getElementById('sl-s').value / 100;
+
+  document.getElementById('v-e').textContent = ne + ' / mois';
+  document.getElementById('v-p').textContent = np + ' / mois';
+  document.getElementById('v-s').textContent = Math.round(split*100)+'% Marcus · '+Math.round((1-split)*100)+'% SRG';
+
+  const caMonth = ne*3200 + np*6500;
+  const caYear = caMonth * 12;
+  const caM = caYear * split;
+  const caSHT = caYear * (1-split);
+  const tva = caSHT * 0.20;
+
+  const chargesM = caM * 0.11;
+  const matos = Math.min(caM * 0.15, 18000);
+  const netM = caM - chargesM - matos;
+  const netMm = netM / 12;
+
+  const chargesP = caSHT * 0.45;
+  const is = Math.max(0,(caSHT - chargesP)*0.15);
+  const netSeb = (caSHT - chargesP - is) * 0.77;
+
+  document.getElementById('metrics').innerHTML = `
+    <div class="metric"><div class="lbl">CA total / an</div><div class="num">${f(caYear)}</div><div class="sub">${ne*12} essentiels + ${np*12} premium</div></div>
+    <div class="metric"><div class="lbl">Marcus — net / mois</div><div class="num green">${f(netMm)}</div><div class="sub">Charges ${f(chargesM/12)}/mois (ACRE 11%)</div></div>
+    <div class="metric"><div class="lbl">Sébastien — net / mois</div><div class="num blue">${f(netSeb/12)}</div><div class="sub">Via salaire SRG</div></div>
+    <div class="metric"><div class="lbl">TVA reversée État / an</div><div class="num amber">${f(tva)}</div><div class="sub">Part SRG uniquement</div></div>
+  `;
+
+  const arr = v => months.map(()=>Math.round(v/12));
+
+  if(cM) cM.destroy();
+  if(cS) cS.destroy();
+
+  const opts = (stacks) => ({
+    type:'bar',
+    data:{ labels: months, datasets: stacks },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ctx.dataset.label+' : '+Math.round(ctx.raw).toLocaleString('fr-FR')+' €' }}},
+      scales:{
+        x:{ stacked:true, ticks:{font:{size:10}} },
+        y:{ stacked:true, ticks:{ callback: v => Math.round(v/1000)+'k€', font:{size:10} }, grid:{color:'rgba(0,0,0,.04)'} }
+      }
+    }
+  });
+
+  cM = new Chart(document.getElementById('cM'), opts([
+    { label:'Net', data:arr(netM), backgroundColor:'#27500A', stack:'s' },
+    { label:'Charges', data:arr(chargesM), backgroundColor:'#639922', stack:'s' },
+    { label:'Matos', data:arr(matos), backgroundColor:'#B4B2A9', stack:'s' },
+  ]));
+
+  cS = new Chart(document.getElementById('cS'), opts([
+    { label:'Net Sébastien', data:arr(netSeb), backgroundColor:'#085041', stack:'s' },
+    { label:'Charges+IS', data:arr(chargesP+is), backgroundColor:'#1D9E75', stack:'s' },
+    { label:'TVA État', data:arr(tva), backgroundColor:'#9FE1CB', stack:'s' },
+  ]));
+
+  document.getElementById('tbl').innerHTML = `
+    <thead><tr><th></th><th class="r">Marcus / mois</th><th class="r">SRG / mois</th><th class="r">Total / mois</th></tr></thead>
+    <tbody>
+      <tr><td>CA facturé HT</td><td class="r">${f(caM/12)}</td><td class="r">${f(caSHT/12)}</td><td class="r">${f(caMonth)}</td></tr>
+      <tr><td>Charges sociales / patronales</td><td class="r red">- ${f(chargesM/12)}</td><td class="r red">- ${f(chargesP/12)}</td><td class="r red">- ${f((chargesM+chargesP)/12)}</td></tr>
+      <tr><td>IS SRG (15%)</td><td class="r gray">—</td><td class="r red">- ${f(is/12)}</td><td class="r red">- ${f(is/12)}</td></tr>
+      <tr><td>Remboursement matos</td><td class="r amber">- ${f(matos/12)}</td><td class="r gray">—</td><td class="r amber">- ${f(matos/12)}</td></tr>
+      <tr><td>TVA reversée État</td><td class="r gray">—</td><td class="r amber">- ${f(tva/12)}</td><td class="r amber">- ${f(tva/12)}</td></tr>
+      <tr><td>Net estimé</td><td class="r green">${f(netMm)}</td><td class="r blue">${f(netSeb/12)}</td><td class="r">${f(netMm+netSeb/12)}</td></tr>
+    </tbody>
+  `;
+
+  const e = 3200;
+  const eTva = e*0.20;
+  const chargesME = e*0.11;
+  const matosE = e*0.15;
+  const netME = e - chargesME - matosE;
+  const ePat = e*0.45;
+  const eIS = Math.max(0,(e-ePat)*0.15);
+  const netSebE = (e-ePat-eIS)*0.77;
+
+  document.getElementById('compare').innerHTML = `
+    <div class="compare-card">
+      <h3>Via SRG Films <span class="badge badge-blue">TVA collectée</span></h3>
+      <div class="compare-row"><span>Client paye</span><span class="v">${f(e+eTva)} TTC</span></div>
+      <div class="compare-row"><span>TVA reversée État</span><span class="v red">- ${f(eTva)}</span></div>
+      <div class="compare-row"><span>Charges patronales + IS</span><span class="v red">- ${f(ePat+eIS)}</span></div>
+      <div class="compare-row"><span>Reversé à Marcus (estimé)</span><span class="v">~${f(e*0.78)}</span></div>
+      <div class="compare-row"><span>Charges Marcus (11%)</span><span class="v red">- ${f(e*0.78*0.11)}</span></div>
+      <div class="compare-total"><span>Net Marcus</span><span class="green">~${f(e*0.78*0.89)}</span></div>
+    </div>
+    <div class="compare-card">
+      <h3>Direct Marcus Giraud <span class="badge badge-green">Franchise TVA</span></h3>
+      <div class="compare-row"><span>Client paye</span><span class="v">${f(e)} TTC</span></div>
+      <div class="compare-row"><span>TVA</span><span class="v gray">Non applicable</span></div>
+      <div class="compare-row"><span>Charges sociales (11%)</span><span class="v red">- ${f(chargesME)}</span></div>
+      <div class="compare-row"><span>Remboursement matos (15%)</span><span class="v amber">- ${f(matosE)}</span></div>
+      <div class="compare-row"><span>&nbsp;</span><span>&nbsp;</span></div>
+      <div class="compare-total"><span>Net Marcus</span><span class="green">${f(netME)}</span></div>
+    </div>
+  `;
+
+  document.getElementById('note').textContent =
+    'Hypothèses : ACRE Marcus à 11% (jusqu\'à sept. 2026, puis 22%). SRG : charges patronales ~45%, IS 15% (régime PME), salaire net ~77% du brut après charges. Remboursement matos estimé à 15% du CA Marcus, plafonné à 1 500 €/mois. Chiffres indicatifs — consulter un expert-comptable pour validation.';
+}
+
+document.getElementById('sl-e').oninput = update;
+document.getElementById('sl-p').oninput = update;
+document.getElementById('sl-s').oninput = update;
+update();
+</script>
+</body>
+</html>
