@@ -3,345 +3,545 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prévisionnel — Forfaits Corpo</title>
+<title>Artemage — Prévisionnel</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  background: #F5F4F0;
-  color: #1A1A1A;
-  min-height: 100vh;
-  padding: 2rem 1rem;
+:root{
+  --bg:#171715;--bg2:#1f1f1d;--bg3:#272725;--bg4:#303030;--bg5:#3a3a38;
+  --ln:rgba(255,255,255,.06);--ln2:rgba(255,255,255,.11);--ln3:rgba(255,255,255,.18);
+  --t1:#edeae2;--t2:#9a9790;--t3:#57564f;
+  --g:#b8e830;--g2:#7ab020;
+  --b:#70b8f0;
+  --am:#f0b030;
+  --rd:#f07070;
+  --sans:'Syne',sans-serif;--mono:'JetBrains Mono',monospace;
 }
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:13px;padding:1.25rem 1rem 4rem;min-height:100vh}
+.wrap{max-width:820px;margin:0 auto}
+.hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1.75rem;padding-bottom:.875rem;border-bottom:1px solid var(--ln)}
+.hdr-left h1{font-size:17px;font-weight:600;letter-spacing:-.01em}
+.hdr-left p{font-size:11px;color:var(--t3);margin-top:2px;font-family:var(--mono)}
+.hdr-right{text-align:right}
+.hdr-right span{font-size:10px;color:var(--t3);display:block;font-family:var(--mono)}
+.hdr-ca{font-size:18px;color:var(--am);font-family:var(--mono);font-weight:500}
+.save-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g2);margin-left:6px;vertical-align:middle;opacity:0;transition:opacity .3s}
+.save-dot.show{opacity:1}
 
-.page {
-  max-width: 900px;
-  margin: 0 auto;
-}
+.s-wrap{margin-bottom:6px}
+.s-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg2);border:1px solid var(--ln);border-radius:9px;cursor:pointer;user-select:none;transition:border-color .18s,background .18s}
+.s-head:hover{border-color:var(--ln2);background:var(--bg3)}
+.s-head.open{border-radius:9px 9px 0 0;border-bottom-color:transparent;background:var(--bg3)}
+.s-title{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:500;color:var(--t2);letter-spacing:.07em;text-transform:uppercase}
+.s-num{width:18px;height:18px;border-radius:5px;background:var(--bg5);display:grid;place-items:center;font-size:10px;color:var(--t3);font-family:var(--mono);flex-shrink:0}
+.s-badge{font-family:var(--mono);font-size:10px;color:var(--t3);background:var(--bg4);padding:2px 7px;border-radius:4px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.s-arrow{color:var(--t3);font-size:9px;transition:transform .22s;flex-shrink:0}
+.s-head.open .s-arrow{transform:rotate(90deg)}
+.s-body{background:var(--bg2);border:1px solid var(--ln);border-top:none;border-radius:0 0 9px 9px;padding:14px;display:none}
+.s-body.open{display:block}
 
-header {
-  margin-bottom: 2rem;
-}
-header h1 {
-  font-size: 22px;
-  font-weight: 500;
-  color: #1A1A1A;
-  margin-bottom: 4px;
-}
-header p {
-  font-size: 13px;
-  color: #888780;
-}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:580px){.cols{grid-template-columns:1fr}}
+.col-head{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--ln)}
+.col-head.a{color:var(--g2)}.col-head.s{color:var(--b)}
 
-.card {
-  background: #fff;
-  border: 0.5px solid #D3D1C7;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.25rem;
-}
+.fcards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:480px){.fcards{grid-template-columns:1fr}}
+.fc{background:var(--bg3);border:1px solid var(--ln);border-radius:8px;padding:11px 12px}
+.fc-name{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:7px}
+.fc input{background:var(--bg4);border:1px solid var(--ln);border-radius:6px;color:var(--g);font-family:var(--mono);font-size:17px;font-weight:500;width:100%;padding:5px 8px;outline:none;transition:border-color .18s}
+.fc input:focus{border-color:var(--g2)}
+.fc-sub{font-size:10px;color:var(--t3);margin-top:5px}
 
-.section-label {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: #888780;
-  margin-bottom: 1rem;
-}
+/* VOLUME — champs numériques décimaux */
+.vol-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--ln)}
+.vol-item:last-child{border-bottom:none}
+.vol-name{flex:1;font-size:12px;color:var(--t2)}
+.vol-input-wrap{display:flex;align-items:center;gap:6px}
+.vol-input{background:var(--bg4);border:1px solid var(--ln);border-radius:6px;color:var(--t1);font-family:var(--mono);font-size:14px;font-weight:500;width:70px;padding:4px 8px;outline:none;text-align:center;transition:border-color .18s}
+.vol-input:focus{border-color:var(--ln2)}
+.vol-unit{font-size:10px;color:var(--t3)}
+.vtot{font-family:var(--mono);font-size:11px;color:var(--t3);min-width:68px;text-align:right}
 
-.controls {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.25rem;
-}
+.cr{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--ln)}
+.cr:last-child{border-bottom:none}
+.cr-lbl{flex:1;min-width:0}
+.cr-lbl input{background:transparent;border:none;color:var(--t2);font-family:var(--sans);font-size:12px;outline:none;width:100%;padding:0}
+.cr-lbl input:focus{color:var(--t1)}
+.cr-val input{background:var(--bg4);border:1px solid var(--ln);border-radius:5px;color:var(--t1);font-family:var(--mono);font-size:11px;width:58px;padding:3px 6px;outline:none;text-align:right;transition:border-color .15s}
+.cr-val input:focus{border-color:var(--ln2)}
+.cr-unit-toggle{display:flex;border:1px solid var(--ln);border-radius:5px;overflow:hidden;flex-shrink:0}
+.cut{padding:3px 6px;font-size:10px;background:transparent;border:none;color:var(--t3);cursor:pointer;font-family:var(--mono);transition:all .15s}
+.cut.active{background:var(--bg5);color:var(--t1)}
+.cr-del{width:18px;height:18px;background:transparent;border:none;color:var(--t3);cursor:pointer;font-size:14px;display:grid;place-items:center;border-radius:4px;flex-shrink:0;transition:color .15s}
+.cr-del:hover{color:var(--rd)}
+.cr-computed{font-family:var(--mono);font-size:10px;color:var(--t3);min-width:54px;text-align:right}
 
-.ctrl label {
-  display: block;
-  font-size: 12px;
-  color: #5F5E5A;
-  margin-bottom: 6px;
-}
+.add-row{margin-top:9px;padding:5px;border:1px dashed var(--ln2);border-radius:7px;color:var(--t3);font-size:10px;cursor:pointer;text-align:center;transition:color .18s,border-color .18s}
+.add-row:hover{color:var(--t1);border-color:var(--ln3)}
 
-.ctrl input[type=range] {
-  width: 100%;
-  accent-color: #1A1A1A;
-  height: 4px;
-  cursor: pointer;
-}
+.tot-bar{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--bg3);border-radius:6px;margin-top:8px}
+.tot-bar .lbl{font-size:11px;color:var(--t2)}
+.tot-bar .val{font-family:var(--mono);font-size:12px;font-weight:500}
+.warn{font-size:10px;color:var(--am);background:rgba(240,176,48,.08);border-radius:6px;padding:5px 9px;margin-top:6px}
 
-.ctrl .val {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  margin-top: 6px;
-  color: #1A1A1A;
-}
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:8px}
+@media(max-width:520px){.mets{grid-template-columns:1fr 1fr}}
+.met{background:var(--bg3);border-radius:8px;padding:10px 11px}
+.met .lbl{font-size:10px;color:var(--t3);margin-bottom:3px}
+.met .num{font-family:var(--mono);font-size:15px;font-weight:500}
+.met .sub{font-size:10px;color:var(--t3);margin-top:2px}
+.cg{color:var(--g)}.cb{color:var(--b)}.ca{color:var(--am)}.cr2{color:var(--rd)}
 
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 10px;
-  margin-bottom: 1.25rem;
-}
+.chart-tabs{display:flex;gap:4px;margin-bottom:10px}
+.ctab{padding:4px 10px;font-size:10px;border-radius:6px;border:1px solid var(--ln);background:transparent;color:var(--t3);cursor:pointer;font-family:var(--sans);transition:all .15s}
+.ctab.active{background:var(--bg4);color:var(--t1);border-color:var(--ln2)}
+.chart-wrap{position:relative;width:100%;height:210px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:9px}
+.legend span{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t2)}
+.ldot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
 
-.metric {
-  background: #F5F4F0;
-  border-radius: 8px;
-  padding: 12px 14px;
-}
-.metric .lbl { font-size: 11px; color: #888780; margin-bottom: 4px; }
-.metric .num { font-size: 20px; font-weight: 500; }
-.metric .sub { font-size: 11px; color: #B4B2A9; margin-top: 2px; }
-.green { color: #27500A; }
-.blue  { color: #0C447C; }
-.amber { color: #633806; }
-.red   { color: #791F1F; }
-.gray  { color: #444441; }
-
-.charts-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-  margin-bottom: 1.25rem;
-}
-@media (max-width: 640px) { .charts-grid { grid-template-columns: 1fr; } }
-
-.chart-card { background: #fff; border: 0.5px solid #D3D1C7; border-radius: 12px; padding: 1.25rem; }
-.chart-title { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
-.chart-sub { font-size: 11px; color: #888780; margin-bottom: 1rem; }
-.chart-wrap { position: relative; width: 100%; height: 220px; }
-.legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: .75rem; }
-.legend span { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #5F5E5A; }
-.dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
-
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-thead th { text-align: left; padding: 7px 10px; font-weight: 500; color: #888780; border-bottom: 0.5px solid #D3D1C7; font-size: 12px; }
-tbody td { padding: 7px 10px; border-bottom: 0.5px solid #EDECE8; }
-tbody tr:last-child td { border-bottom: none; font-weight: 500; background: #F5F4F0; border-radius: 4px; }
-.r { text-align: right; }
-
-.note {
-  font-size: 11px;
-  color: #B4B2A9;
-  line-height: 1.6;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 0.5px solid #EDECE8;
-}
-
-.compare-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-top: .75rem;
-}
-@media (max-width: 540px) { .compare-grid { grid-template-columns: 1fr; } }
-
-.compare-card {
-  border: 0.5px solid #D3D1C7;
-  border-radius: 8px;
-  padding: 1rem;
-}
-.compare-card h3 { font-size: 13px; font-weight: 500; margin-bottom: .75rem; }
-.compare-row { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; color: #5F5E5A; }
-.compare-row .v { font-weight: 500; color: #1A1A1A; }
-.compare-total { display: flex; justify-content: space-between; font-size: 13px; font-weight: 500; padding: 6px 0 0; margin-top: 4px; border-top: 0.5px solid #D3D1C7; }
-.badge { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 500; margin-left: 6px; }
-.badge-green { background: #EAF3DE; color: #27500A; }
-.badge-blue  { background: #E6F1FB; color: #0C447C; }
-
-footer { text-align: center; font-size: 11px; color: #B4B2A9; margin-top: 2rem; }
+.plafond-bar{margin-top:10px}
+.plafond-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:4px}
+.pb-track{width:100%;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.pb-fill{height:100%;border-radius:3px;transition:width .4s,background .4s}
+.divider{border:none;border-top:1px solid var(--ln);margin:11px 0}
 </style>
 </head>
 <body>
-<div class="page">
+<div class="wrap">
 
-  <header>
-    <h1>Prévisionnel — Forfaits corpo</h1>
-    <p>Marcus Giraud × SRG Films · Document interne · 2026–2027</p>
-  </header>
-
-  <div class="card">
-    <div class="section-label">Paramètres</div>
-    <div class="controls">
-      <div class="ctrl">
-        <label>Forfaits Corpo Essentiel / mois</label>
-        <input type="range" min="1" max="8" value="3" step="1" id="sl-e">
-        <span class="val" id="v-e">3 / mois</span>
-      </div>
-      <div class="ctrl">
-        <label>Forfaits Corpo Premium / mois</label>
-        <input type="range" min="0" max="4" value="1" step="1" id="sl-p">
-        <span class="val" id="v-p">1 / mois</span>
-      </div>
-      <div class="ctrl">
-        <label>Répartition Marcus / SRG</label>
-        <input type="range" min="0" max="100" value="60" step="10" id="sl-s">
-        <span class="val" id="v-s">60% Marcus · 40% SRG</span>
-      </div>
-    </div>
+<div class="hdr">
+  <div class="hdr-left">
+    <h1>Artemage × SRG Films<span class="save-dot" id="sdot"></span></h1>
+    <p>Prévisionnel interactif · 2026–2027</p>
   </div>
-
-  <div class="metrics" id="metrics"></div>
-
-  <div class="charts-grid">
-    <div class="chart-card">
-      <div class="chart-title">Marcus Giraud — micro-entreprise</div>
-      <div class="chart-sub">Répartition mensuelle</div>
-      <div class="legend">
-        <span><span class="dot" style="background:#27500A"></span>Net</span>
-        <span><span class="dot" style="background:#639922"></span>Charges</span>
-        <span><span class="dot" style="background:#B4B2A9"></span>Matos</span>
-      </div>
-      <div class="chart-wrap"><canvas id="cM"></canvas></div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">SRG Films — SASU</div>
-      <div class="chart-sub">Répartition mensuelle</div>
-      <div class="legend">
-        <span><span class="dot" style="background:#085041"></span>Net Sébastien</span>
-        <span><span class="dot" style="background:#1D9E75"></span>Charges + IS</span>
-        <span><span class="dot" style="background:#9FE1CB"></span>TVA État</span>
-      </div>
-      <div class="chart-wrap"><canvas id="cS"></canvas></div>
-    </div>
+  <div class="hdr-right">
+    <span>CA mensuel</span>
+    <span class="hdr-ca" id="hdr-ca">—</span>
   </div>
-
-  <div class="card">
-    <div class="section-label">Détail mensuel moyen</div>
-    <table id="tbl"></table>
-    <div class="note" id="note"></div>
-  </div>
-
-  <div class="card">
-    <div class="section-label">Comparaison — Forfait Corpo Essentiel 3 200 € HT</div>
-    <p style="font-size:12px;color:#5F5E5A;margin-bottom:.75rem">Pour un même forfait à 3 200 € HT, voici ce que ça représente selon la structure qui facture.</p>
-    <div class="compare-grid" id="compare"></div>
-  </div>
-
 </div>
 
-<footer>Document confidentiel · Marcus Giraud × SRG Films · 2026</footer>
+<!-- ① OFFRE -->
+<div class="s-wrap">
+  <div class="s-head open" onclick="tog(this)">
+    <div class="s-title"><span class="s-num">1</span>Offre de services<span class="s-badge" id="b-offre">—</span></div>
+    <span class="s-arrow">▶</span>
+  </div>
+  <div class="s-body open">
+    <div class="fcards">
+      <div class="fc"><div class="fc-name">Corpo Essentiel</div><input type="number" id="pe" value="2800" min="0" step="100" oninput="save();calc()"><div class="fc-sub">1j PDV · 1j post · V3</div></div>
+      <div class="fc"><div class="fc-name">Corpo Premium</div><input type="number" id="pp" value="6500" min="0" step="100" oninput="save();calc()"><div class="fc-sub">2j PDV · 2j post · Motion</div></div>
+      <div class="fc"><div class="fc-name">Contenu Récurrent</div><input type="number" id="pr" value="8500" min="0" step="100" oninput="save();calc()"><div class="fc-sub">3 × Essentiel · 6 mois</div></div>
+    </div>
+  </div>
+</div>
 
+<!-- ② VOLUME -->
+<div class="s-wrap">
+  <div class="s-head" onclick="tog(this)">
+    <div class="s-title"><span class="s-num">2</span>Volume mensuel<span class="s-badge" id="b-vol">—</span></div>
+    <span class="s-arrow">▶</span>
+  </div>
+  <div class="s-body">
+    <div id="vol-list"></div>
+    <div class="divider"></div>
+    <div class="tot-bar"><span class="lbl">CA mensuel brut</span><span class="val ca" id="ca-tot">—</span></div>
+    <div class="plafond-bar">
+      <div class="plafond-lbl"><span>Plafond micro Artemage (77 700 € / an)</span><span id="plf-pct">—</span></div>
+      <div class="pb-track"><div class="pb-fill" id="plf-bar"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ③ CHARGES -->
+<div class="s-wrap">
+  <div class="s-head" onclick="tog(this)">
+    <div class="s-title"><span class="s-num">3</span>Charges<span class="s-badge" id="b-chg">—</span></div>
+    <span class="s-arrow">▶</span>
+  </div>
+  <div class="s-body">
+    <div class="cols">
+      <div>
+        <div class="col-head a">Artemage</div>
+        <div id="chg-m"></div>
+        <div class="add-row" onclick="addChg('m')">+ poste</div>
+        <div class="tot-bar" style="margin-top:8px"><span class="lbl">Total charges</span><span class="val cr2" id="tc-m">—</span></div>
+      </div>
+      <div>
+        <div class="col-head s">SRG Films</div>
+        <div id="chg-s"></div>
+        <div class="add-row" onclick="addChg('s')">+ poste</div>
+        <div class="tot-bar" style="margin-top:8px"><span class="lbl">Total charges</span><span class="val cr2" id="tc-s">—</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ④ RECETTES -->
+<div class="s-wrap">
+  <div class="s-head" onclick="tog(this)">
+    <div class="s-title"><span class="s-num">4</span>Dispatch recettes<span class="s-badge" id="b-rec">—</span></div>
+    <span class="s-arrow">▶</span>
+  </div>
+  <div class="s-body">
+    <div class="cols">
+      <div>
+        <div class="col-head a">Artemage — net après charges</div>
+        <div id="rec-m"></div>
+        <div class="add-row" onclick="addRec('m')">+ destination</div>
+        <div id="rw-m"></div>
+      </div>
+      <div>
+        <div class="col-head s">SRG — net après charges & IS</div>
+        <div id="rec-s"></div>
+        <div class="add-row" onclick="addRec('s')">+ destination</div>
+        <div id="rw-s"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- METRICS -->
+<div class="mets" id="mets"></div>
+
+<!-- ⑤ COURBE -->
+<div class="s-wrap">
+  <div class="s-head" onclick="tog(this)">
+    <div class="s-title"><span class="s-num">5</span>Courbe de croissance</div>
+    <span class="s-arrow">▶</span>
+  </div>
+  <div class="s-body">
+    <div class="chart-tabs">
+      <button class="ctab active" onclick="setTab('ca',this)">CA mensuel</button>
+      <button class="ctab" onclick="setTab('net',this)">Net par entité</button>
+      <button class="ctab" onclick="setTab('both',this)">Vue combinée</button>
+    </div>
+    <div class="legend" id="chart-legend"></div>
+    <div class="chart-wrap"><canvas id="cChart"></canvas></div>
+    <div style="font-size:10px;color:var(--t3);margin-top:8px">Montée progressive sur 6 mois · ACRE → 22% en sept. 2026</div>
+  </div>
+</div>
+
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-let cM, cS;
-const f = n => Math.round(n).toLocaleString('fr-FR') + ' €';
-const months = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+const F = n => {
+  const r = Math.round(n*10)/10;
+  return r.toLocaleString('fr-FR') + ' €';
+};
+const STORE = 'artemage_v5';
+let mainChart, chartTab = 'ca', saveTimer;
 
-function update() {
-  const ne = +document.getElementById('sl-e').value;
-  const np = +document.getElementById('sl-p').value;
-  const split = +document.getElementById('sl-s').value / 100;
+// ── DEFAULT STATE ────────────────────────────────────────────────────────────
 
-  document.getElementById('v-e').textContent = ne + ' / mois';
-  document.getElementById('v-p').textContent = np + ' / mois';
-  document.getElementById('v-s').textContent = Math.round(split*100)+'% Marcus · '+Math.round((1-split)*100)+'% SRG';
+const DEF = {
+  pe:2800, pp:6500, pr:8500,
+  ve:3, vp:0.5, vr:0,
+  cM:[
+    {id:'m1',lbl:'Charges sociales (ACRE)',val:11,unit:'%'},
+    {id:'m2',lbl:'Remboursement matos',val:15,unit:'%'},
+    {id:'m3',lbl:'Qonto Smart',val:19,unit:'€'},
+    {id:'m4',lbl:'RC Pro',val:33,unit:'€'},
+    {id:'m5',lbl:'Artlist + ElevenLabs',val:50,unit:'€'},
+  ],
+  cS:[
+    {id:'s1',lbl:'Charges patronales',val:45,unit:'%'},
+    {id:'s2',lbl:'IS (15%)',val:15,unit:'%'},
+    {id:'s3',lbl:'TVA reversée État',val:20,unit:'%'},
+    {id:'s4',lbl:'Assurance MMA',val:55,unit:'€'},
+  ],
+  rM:[
+    {id:'rm1',lbl:'Salaire net Marcus',val:70},
+    {id:'rm2',lbl:'Épargne / trésorerie',val:20},
+    {id:'rm3',lbl:'Développement',val:10},
+  ],
+  rS:[
+    {id:'rs1',lbl:'Salaire Sébastien',val:75},
+    {id:'rs2',lbl:'Trésorerie SRG',val:25},
+  ]
+};
 
-  const caMonth = ne*3200 + np*6500;
-  const caYear = caMonth * 12;
-  const caM = caYear * split;
-  const caSHT = caYear * (1-split);
-  const tva = caSHT * 0.20;
+// ── PERSIST ──────────────────────────────────────────────────────────────────
 
-  const chargesM = caM * 0.11;
-  const matos = Math.min(caM * 0.15, 18000);
-  const netM = caM - chargesM - matos;
-  const netMm = netM / 12;
+function save() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{
+    const state = {
+      pe: +document.getElementById('pe').value,
+      pp: +document.getElementById('pp').value,
+      pr: +document.getElementById('pr').value,
+      ve: +document.getElementById('ve').value,
+      vp: +document.getElementById('vp').value,
+      vr: +document.getElementById('vr').value,
+      cM: JSON.parse(JSON.stringify(cM)),
+      cS: JSON.parse(JSON.stringify(cS)),
+      rM: JSON.parse(JSON.stringify(rM)),
+      rS: JSON.parse(JSON.stringify(rS)),
+    };
+    try {
+      localStorage.setItem(STORE, JSON.stringify(state));
+      const dot = document.getElementById('sdot');
+      dot.classList.add('show');
+      setTimeout(()=>dot.classList.remove('show'), 1200);
+    } catch(e){}
+  }, 600);
+}
 
-  const chargesP = caSHT * 0.45;
-  const is = Math.max(0,(caSHT - chargesP)*0.15);
-  const netSeb = (caSHT - chargesP - is) * 0.77;
+function load() {
+  try {
+    const raw = localStorage.getItem(STORE);
+    if(!raw) return DEF;
+    return {...DEF, ...JSON.parse(raw)};
+  } catch(e){ return DEF; }
+}
 
-  document.getElementById('metrics').innerHTML = `
-    <div class="metric"><div class="lbl">CA total / an</div><div class="num">${f(caYear)}</div><div class="sub">${ne*12} essentiels + ${np*12} premium</div></div>
-    <div class="metric"><div class="lbl">Marcus — net / mois</div><div class="num green">${f(netMm)}</div><div class="sub">Charges ${f(chargesM/12)}/mois (ACRE 11%)</div></div>
-    <div class="metric"><div class="lbl">Sébastien — net / mois</div><div class="num blue">${f(netSeb/12)}</div><div class="sub">Via salaire SRG</div></div>
-    <div class="metric"><div class="lbl">TVA reversée État / an</div><div class="num amber">${f(tva)}</div><div class="sub">Part SRG uniquement</div></div>
+// ── INIT STATE ───────────────────────────────────────────────────────────────
+
+const stored = load();
+let cM = stored.cM.map(c=>({...c}));
+let cS = stored.cS.map(c=>({...c}));
+let rM = stored.rM.map(c=>({...c}));
+let rS = stored.rS.map(c=>({...c}));
+
+// ── ACCORDION ────────────────────────────────────────────────────────────────
+
+function tog(h){
+  h.classList.toggle('open');
+  h.nextElementSibling.classList.toggle('open');
+}
+
+// ── VOLUME ───────────────────────────────────────────────────────────────────
+
+function buildVol() {
+  const items = [
+    {id:'ve', name:'Corpo Essentiel'},
+    {id:'vp', name:'Corpo Premium'},
+    {id:'vr', name:'Contenu Récurrent'},
+  ];
+  document.getElementById('vol-list').innerHTML = items.map(it=>`
+    <div class="vol-item">
+      <span class="vol-name">${it.name}</span>
+      <div class="vol-input-wrap">
+        <input type="number" class="vol-input" id="${it.id}" value="${stored[it.id]}" min="0" step="0.5" oninput="save();calc()">
+        <span class="vol-unit">/ mois</span>
+      </div>
+      <span class="vtot" id="vt-${it.id}"></span>
+    </div>`).join('');
+}
+
+// ── CHARGES ──────────────────────────────────────────────────────────────────
+
+function buildChg(e){
+  const arr = e==='m'?cM:cS;
+  document.getElementById('chg-'+e).innerHTML = arr.map(c=>`
+    <div class="cr" id="cr-${c.id}">
+      <div class="cr-lbl"><input type="text" value="${c.lbl}" oninput="updChg('${e}','${c.id}','lbl',this.value)"></div>
+      <div class="cr-val"><input type="number" value="${c.val}" min="0" step="${c.unit==='%'?1:5}" oninput="updChg('${e}','${c.id}','val',this.value)"></div>
+      <div class="cr-unit-toggle">
+        <button class="cut ${c.unit==='%'?'active':''}" onclick="setUnit('${e}','${c.id}','%',this)">%</button>
+        <button class="cut ${c.unit==='€'?'active':''}" onclick="setUnit('${e}','${c.id}','€',this)">€</button>
+      </div>
+      <span class="cr-computed" id="cc-${c.id}"></span>
+      <button class="cr-del" onclick="delChg('${e}','${c.id}')">×</button>
+    </div>`).join('');
+}
+
+function setUnit(e,id,unit,btn){
+  const c=(e==='m'?cM:cS).find(x=>x.id===id);
+  if(c) c.unit=unit;
+  btn.parentElement.querySelectorAll('.cut').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  save(); calc();
+}
+function updChg(e,id,field,val){
+  const c=(e==='m'?cM:cS).find(x=>x.id===id);
+  if(c) c[field]=field==='val'?(parseFloat(val)||0):val;
+  save(); calc();
+}
+function delChg(e,id){
+  if(e==='m') cM=cM.filter(c=>c.id!==id);
+  else cS=cS.filter(c=>c.id!==id);
+  buildChg(e); save(); calc();
+}
+function addChg(e){
+  const id=e+Date.now();
+  (e==='m'?cM:cS).push({id,lbl:'Nouveau poste',val:0,unit:'€'});
+  buildChg(e); save(); calc();
+}
+
+// ── RECETTES ─────────────────────────────────────────────────────────────────
+
+function buildRec(e, net){
+  const arr = e==='m'?rM:rS;
+  const tot = arr.reduce((s,r)=>s+r.val,0);
+  document.getElementById('rec-'+e).innerHTML = arr.map(r=>`
+    <div class="cr" id="rr-${r.id}">
+      <div class="cr-lbl"><input type="text" value="${r.lbl}" oninput="updRec('${e}','${r.id}','lbl',this.value)"></div>
+      <div class="cr-val"><input type="number" value="${r.val}" min="0" max="100" step="1" oninput="updRec('${e}','${r.id}','val',this.value)"></div>
+      <div class="cr-unit-toggle" style="pointer-events:none;opacity:.35"><button class="cut active">%</button></div>
+      <span class="cr-computed" style="color:var(--g)">${F(net*(r.val/100))}</span>
+      <button class="cr-del" onclick="delRec('${e}','${r.id}')">×</button>
+    </div>`).join('');
+  document.getElementById('rw-'+e).innerHTML = tot!==100
+    ? `<div class="warn">Total : ${tot}% ≠ 100%</div>` : '';
+}
+
+function updRec(e,id,field,val){
+  const r=(e==='m'?rM:rS).find(x=>x.id===id);
+  if(r) r[field]=field==='val'?(parseFloat(val)||0):val;
+  save(); calc();
+}
+function delRec(e,id){
+  if(e==='m') rM=rM.filter(r=>r.id!==id);
+  else rS=rS.filter(r=>r.id!==id);
+  save(); calc();
+}
+function addRec(e){
+  const id='r'+e+Date.now();
+  (e==='m'?rM:rS).push({id,lbl:'Nouvelle destination',val:0});
+  save(); calc();
+}
+
+// ── CHART ────────────────────────────────────────────────────────────────────
+
+function setTab(t,btn){
+  chartTab=t;
+  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  calc();
+}
+
+// ── MAIN CALC ────────────────────────────────────────────────────────────────
+
+function calc(){
+  const pe=+document.getElementById('pe').value||0;
+  const pp=+document.getElementById('pp').value||0;
+  const pr=+document.getElementById('pr').value||0;
+  const ve=+document.getElementById('ve').value||0;
+  const vp=+document.getElementById('vp').value||0;
+  const vr=+document.getElementById('vr').value||0;
+
+  // Vol totals
+  [['ve',ve,pe],['vp',vp,pp],['vr',vr,pr]].forEach(([id,v,p])=>{
+    const el=document.getElementById('vt-'+id);
+    if(el) el.textContent = F(v*p)+'/mois';
+  });
+
+  const caMonth = ve*pe + vp*pp + vr*pr;
+  document.getElementById('ca-tot').textContent = F(caMonth);
+  document.getElementById('hdr-ca').textContent = F(caMonth);
+
+  // Badges
+  document.getElementById('b-offre').textContent = `${pe}€ · ${pp}€ · ${pr}€`;
+  document.getElementById('b-vol').textContent = `${ve}E · ${vp}P · ${vr}R → ${Math.round(caMonth).toLocaleString('fr-FR')}€`;
+
+  // Plafond
+  const plfPct = Math.min(100, Math.round(caMonth*12/77700*100));
+  document.getElementById('plf-pct').textContent = plfPct+'% du plafond';
+  const bar = document.getElementById('plf-bar');
+  bar.style.width = plfPct+'%';
+  bar.style.background = plfPct>=90?'#f07070':plfPct>=70?'#f0b030':'#b8e830';
+
+  // Charges Marcus
+  let totCM=0;
+  cM.forEach(c=>{
+    const v = c.unit==='%' ? caMonth*(c.val/100) : c.val;
+    totCM+=v;
+    const el=document.getElementById('cc-'+c.id);
+    if(el) el.textContent = c.unit==='%' ? F(v) : '';
+  });
+  document.getElementById('tc-m').textContent = '− '+F(totCM);
+
+  // Charges SRG
+  let totCS=0;
+  cS.forEach(c=>{
+    const v = c.unit==='%' ? caMonth*(c.val/100) : c.val;
+    totCS+=v;
+    const el=document.getElementById('cc-'+c.id);
+    if(el) el.textContent = c.unit==='%' ? F(v) : '';
+  });
+  document.getElementById('tc-s').textContent = '− '+F(totCS);
+  document.getElementById('b-chg').textContent = '− '+F(totCM+totCS);
+
+  const netM = Math.max(0, caMonth-totCM);
+  const netS = Math.max(0, caMonth-totCS);
+
+  buildRec('m', netM);
+  buildRec('s', netS);
+
+  const salM = rM.find(r=>r.id==='rm1');
+  const salS = rS.find(r=>r.id==='rs1');
+  const netMSal = salM ? netM*(salM.val/100) : 0;
+  const netSSal = salS ? netS*(salS.val/100) : 0;
+  document.getElementById('b-rec').textContent = F(netMSal)+' · '+F(netSSal);
+
+  // Métriques
+  document.getElementById('mets').innerHTML = `
+    <div class="met"><div class="lbl">CA mensuel</div><div class="num ca">${F(caMonth)}</div><div class="sub">${ve}E · ${vp}P · ${vr}R</div></div>
+    <div class="met"><div class="lbl">Net Marcus</div><div class="num cg">${F(netMSal)}</div><div class="sub">Après charges</div></div>
+    <div class="met"><div class="lbl">Net Sébastien</div><div class="num cb">${F(netSSal)}</div><div class="sub">Après charges SRG</div></div>
+    <div class="met"><div class="lbl">CA annuel</div><div class="num ca">${F(caMonth*12)}</div><div class="sub">× 12 mois</div></div>
   `;
 
-  const arr = v => months.map(()=>Math.round(v/12));
+  // Courbe
+  const labels=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+  const g=i=>Math.min(1,0.3+i*0.1);
+  const acre=i=>i<5?1:0.89;
+  const dCA   = labels.map((_,i)=>Math.round(caMonth*g(i)));
+  const dNetM = labels.map((_,i)=>Math.round(netMSal*g(i)*acre(i)));
+  const dNetS = labels.map((_,i)=>Math.round(netSSal*g(i)));
+  const dSeuil= labels.map(()=>2000);
 
-  if(cM) cM.destroy();
-  if(cS) cS.destroy();
+  let datasets, legend;
+  if(chartTab==='ca'){
+    datasets=[
+      {label:'CA Artemage',data:dCA,borderColor:'#b8e830',backgroundColor:'rgba(184,232,48,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
+      {label:'CA SRG',     data:dCA,borderColor:'#70b8f0',backgroundColor:'rgba(112,184,240,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:1.5,borderDash:[5,3]},
+    ];
+    legend=[{c:'#b8e830',l:'CA Artemage (si Marcus facture)'},{c:'#70b8f0',l:'CA SRG (si Sébastien facture)'}];
+  } else if(chartTab==='net'){
+    datasets=[
+      {label:'Net Marcus',    data:dNetM, borderColor:'#b8e830',backgroundColor:'rgba(184,232,48,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
+      {label:'Net Sébastien', data:dNetS, borderColor:'#70b8f0',backgroundColor:'rgba(112,184,240,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
+      {label:'Seuil 2 000 €',data:dSeuil,borderColor:'rgba(240,112,112,.4)',backgroundColor:'transparent',pointRadius:0,borderWidth:1,borderDash:[2,4]},
+    ];
+    legend=[{c:'#b8e830',l:'Net Marcus'},{c:'#70b8f0',l:'Net Sébastien'},{c:'#f07070',l:'Seuil 2 000 €'}];
+  } else {
+    datasets=[
+      {label:'CA mensuel',    data:dCA,   borderColor:'rgba(240,176,48,.6)',backgroundColor:'transparent',tension:.4,pointRadius:0,borderWidth:1.5,borderDash:[4,3]},
+      {label:'Net Marcus',    data:dNetM, borderColor:'#b8e830',backgroundColor:'rgba(184,232,48,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
+      {label:'Net Sébastien', data:dNetS, borderColor:'#70b8f0',backgroundColor:'rgba(112,184,240,.06)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
+      {label:'Seuil 2 000 €',data:dSeuil,borderColor:'rgba(240,112,112,.4)',backgroundColor:'transparent',pointRadius:0,borderWidth:1,borderDash:[2,4]},
+    ];
+    legend=[{c:'#f0b030',l:'CA mensuel'},{c:'#b8e830',l:'Net Marcus'},{c:'#70b8f0',l:'Net Sébastien'},{c:'#f07070',l:'Seuil 2 000 €'}];
+  }
 
-  const opts = (stacks) => ({
-    type:'bar',
-    data:{ labels: months, datasets: stacks },
+  document.getElementById('chart-legend').innerHTML = legend.map(l=>`<span><span class="ldot" style="background:${l.c}"></span>${l.l}</span>`).join('');
+  if(mainChart) mainChart.destroy();
+  mainChart = new Chart(document.getElementById('cChart'),{
+    type:'line', data:{labels,datasets},
     options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ctx.dataset.label+' : '+Math.round(ctx.raw).toLocaleString('fr-FR')+' €' }}},
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+' : '+Math.round(ctx.raw).toLocaleString('fr-FR')+' €'}}},
       scales:{
-        x:{ stacked:true, ticks:{font:{size:10}} },
-        y:{ stacked:true, ticks:{ callback: v => Math.round(v/1000)+'k€', font:{size:10} }, grid:{color:'rgba(0,0,0,.04)'} }
+        x:{ticks:{font:{size:9},color:'#57564f',maxRotation:45},grid:{color:'rgba(255,255,255,.03)'}},
+        y:{ticks:{callback:v=>v>=1000?(v/1000).toFixed(0)+'k€':v+'€',font:{size:9},color:'#57564f'},grid:{color:'rgba(255,255,255,.04)'}}
       }
     }
   });
-
-  cM = new Chart(document.getElementById('cM'), opts([
-    { label:'Net', data:arr(netM), backgroundColor:'#27500A', stack:'s' },
-    { label:'Charges', data:arr(chargesM), backgroundColor:'#639922', stack:'s' },
-    { label:'Matos', data:arr(matos), backgroundColor:'#B4B2A9', stack:'s' },
-  ]));
-
-  cS = new Chart(document.getElementById('cS'), opts([
-    { label:'Net Sébastien', data:arr(netSeb), backgroundColor:'#085041', stack:'s' },
-    { label:'Charges+IS', data:arr(chargesP+is), backgroundColor:'#1D9E75', stack:'s' },
-    { label:'TVA État', data:arr(tva), backgroundColor:'#9FE1CB', stack:'s' },
-  ]));
-
-  document.getElementById('tbl').innerHTML = `
-    <thead><tr><th></th><th class="r">Marcus / mois</th><th class="r">SRG / mois</th><th class="r">Total / mois</th></tr></thead>
-    <tbody>
-      <tr><td>CA facturé HT</td><td class="r">${f(caM/12)}</td><td class="r">${f(caSHT/12)}</td><td class="r">${f(caMonth)}</td></tr>
-      <tr><td>Charges sociales / patronales</td><td class="r red">- ${f(chargesM/12)}</td><td class="r red">- ${f(chargesP/12)}</td><td class="r red">- ${f((chargesM+chargesP)/12)}</td></tr>
-      <tr><td>IS SRG (15%)</td><td class="r gray">—</td><td class="r red">- ${f(is/12)}</td><td class="r red">- ${f(is/12)}</td></tr>
-      <tr><td>Remboursement matos</td><td class="r amber">- ${f(matos/12)}</td><td class="r gray">—</td><td class="r amber">- ${f(matos/12)}</td></tr>
-      <tr><td>TVA reversée État</td><td class="r gray">—</td><td class="r amber">- ${f(tva/12)}</td><td class="r amber">- ${f(tva/12)}</td></tr>
-      <tr><td>Net estimé</td><td class="r green">${f(netMm)}</td><td class="r blue">${f(netSeb/12)}</td><td class="r">${f(netMm+netSeb/12)}</td></tr>
-    </tbody>
-  `;
-
-  const e = 3200;
-  const eTva = e*0.20;
-  const chargesME = e*0.11;
-  const matosE = e*0.15;
-  const netME = e - chargesME - matosE;
-  const ePat = e*0.45;
-  const eIS = Math.max(0,(e-ePat)*0.15);
-  const netSebE = (e-ePat-eIS)*0.77;
-
-  document.getElementById('compare').innerHTML = `
-    <div class="compare-card">
-      <h3>Via SRG Films <span class="badge badge-blue">TVA collectée</span></h3>
-      <div class="compare-row"><span>Client paye</span><span class="v">${f(e+eTva)} TTC</span></div>
-      <div class="compare-row"><span>TVA reversée État</span><span class="v red">- ${f(eTva)}</span></div>
-      <div class="compare-row"><span>Charges patronales + IS</span><span class="v red">- ${f(ePat+eIS)}</span></div>
-      <div class="compare-row"><span>Reversé à Marcus (estimé)</span><span class="v">~${f(e*0.78)}</span></div>
-      <div class="compare-row"><span>Charges Marcus (11%)</span><span class="v red">- ${f(e*0.78*0.11)}</span></div>
-      <div class="compare-total"><span>Net Marcus</span><span class="green">~${f(e*0.78*0.89)}</span></div>
-    </div>
-    <div class="compare-card">
-      <h3>Direct Marcus Giraud <span class="badge badge-green">Franchise TVA</span></h3>
-      <div class="compare-row"><span>Client paye</span><span class="v">${f(e)} TTC</span></div>
-      <div class="compare-row"><span>TVA</span><span class="v gray">Non applicable</span></div>
-      <div class="compare-row"><span>Charges sociales (11%)</span><span class="v red">- ${f(chargesME)}</span></div>
-      <div class="compare-row"><span>Remboursement matos (15%)</span><span class="v amber">- ${f(matosE)}</span></div>
-      <div class="compare-row"><span>&nbsp;</span><span>&nbsp;</span></div>
-      <div class="compare-total"><span>Net Marcus</span><span class="green">${f(netME)}</span></div>
-    </div>
-  `;
-
-  document.getElementById('note').textContent =
-    'Hypothèses : ACRE Marcus à 11% (jusqu\'à sept. 2026, puis 22%). SRG : charges patronales ~45%, IS 15% (régime PME), salaire net ~77% du brut après charges. Remboursement matos estimé à 15% du CA Marcus, plafonné à 1 500 €/mois. Chiffres indicatifs — consulter un expert-comptable pour validation.';
 }
 
-document.getElementById('sl-e').oninput = update;
-document.getElementById('sl-p').oninput = update;
-document.getElementById('sl-s').oninput = update;
-update();
+// ── INIT ─────────────────────────────────────────────────────────────────────
+
+document.getElementById('pe').value = stored.pe;
+document.getElementById('pp').value = stored.pp;
+document.getElementById('pr').value = stored.pr;
+
+buildVol();
+buildChg('m');
+buildChg('s');
+calc();
 </script>
 </body>
 </html>
