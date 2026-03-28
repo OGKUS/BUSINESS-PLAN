@@ -8,192 +8,247 @@
 <style>
 :root{
   --bg:#171715;--bg2:#1f1f1d;--bg3:#272725;--bg4:#303030;--bg5:#3a3a38;
-  --ln:rgba(255,255,255,.06);--ln2:rgba(255,255,255,.11);--ln3:rgba(255,255,255,.18);
+  --ln:rgba(255,255,255,.06);--ln2:rgba(255,255,255,.11);--ln3:rgba(255,255,255,.2);
   --t1:#edeae2;--t2:#9a9790;--t3:#57564f;
-  --g:#b8e830;--g2:#7ab020;
-  --b:#70b8f0;
-  --am:#f0b030;
-  --rd:#f07070;
+  --g:#b8e830;--g2:#7ab020;--gb:rgba(184,232,48,.08);
+  --b:#70b8f0;--bb:rgba(112,184,240,.08);
+  --am:#f0b030;--rd:#f07070;
   --sans:'Syne',sans-serif;--mono:'JetBrains Mono',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:13px;padding:1.25rem 1rem 4rem;min-height:100vh}
-.wrap{max-width:820px;margin:0 auto}
+body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:13px;padding:1.25rem 1rem 5rem;min-height:100vh}
+.wrap{max-width:860px;margin:0 auto}
+
+/* HEADER */
 .hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1.75rem;padding-bottom:.875rem;border-bottom:1px solid var(--ln)}
-.hdr-left h1{font-size:17px;font-weight:600;letter-spacing:-.01em}
-.hdr-left p{font-size:11px;color:var(--t3);margin-top:2px;font-family:var(--mono)}
+.hdr h1{font-size:17px;font-weight:600;letter-spacing:-.01em}
+.hdr p{font-size:11px;color:var(--t3);margin-top:2px;font-family:var(--mono)}
 .hdr-right{text-align:right}
-.hdr-right span{font-size:10px;color:var(--t3);display:block;font-family:var(--mono)}
 .hdr-ca{font-size:18px;color:var(--am);font-family:var(--mono);font-weight:500}
-.save-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g2);margin-left:6px;vertical-align:middle;opacity:0;transition:opacity .3s}
-.save-dot.show{opacity:1}
+.hdr-sub{font-size:10px;color:var(--t3);font-family:var(--mono)}
+.sdot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g2);margin-left:6px;vertical-align:middle;opacity:0;transition:opacity .3s}
+.sdot.on{opacity:1}
 
-.s-wrap{margin-bottom:6px}
-.s-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg2);border:1px solid var(--ln);border-radius:9px;cursor:pointer;user-select:none;transition:border-color .18s,background .18s}
-.s-head:hover{border-color:var(--ln2);background:var(--bg3)}
-.s-head.open{border-radius:9px 9px 0 0;border-bottom-color:transparent;background:var(--bg3)}
-.s-title{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:500;color:var(--t2);letter-spacing:.07em;text-transform:uppercase}
-.s-num{width:18px;height:18px;border-radius:5px;background:var(--bg5);display:grid;place-items:center;font-size:10px;color:var(--t3);font-family:var(--mono);flex-shrink:0}
-.s-badge{font-family:var(--mono);font-size:10px;color:var(--t3);background:var(--bg4);padding:2px 7px;border-radius:4px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.s-arrow{color:var(--t3);font-size:9px;transition:transform .22s;flex-shrink:0}
-.s-head.open .s-arrow{transform:rotate(90deg)}
-.s-body{background:var(--bg2);border:1px solid var(--ln);border-top:none;border-radius:0 0 9px 9px;padding:14px;display:none}
-.s-body.open{display:block}
+/* ACCORDION */
+.aw{margin-bottom:6px}
+.ah{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg2);border:1px solid var(--ln);border-radius:9px;cursor:pointer;user-select:none;transition:border-color .18s,background .18s}
+.ah:hover{border-color:var(--ln2);background:var(--bg3)}
+.ah.open{border-radius:9px 9px 0 0;border-bottom-color:transparent;background:var(--bg3)}
+.at{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:500;color:var(--t2);letter-spacing:.07em;text-transform:uppercase}
+.anum{width:18px;height:18px;border-radius:5px;background:var(--bg5);display:grid;place-items:center;font-size:10px;color:var(--t3);font-family:var(--mono);flex-shrink:0}
+.abadge{font-family:var(--mono);font-size:10px;color:var(--t3);background:var(--bg4);padding:2px 8px;border-radius:4px;max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arr{color:var(--t3);font-size:9px;transition:transform .22s;flex-shrink:0}
+.ah.open .arr{transform:rotate(90deg)}
+.ab{background:var(--bg2);border:1px solid var(--ln);border-top:none;border-radius:0 0 9px 9px;padding:14px;display:none}
+.ab.open{display:block}
 
+/* LAYOUTS */
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:580px){.cols{grid-template-columns:1fr}}
-.col-head{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--ln)}
-.col-head.a{color:var(--g2)}.col-head.s{color:var(--b)}
+.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:600px){.cols,.cols3{grid-template-columns:1fr}}
+.ch{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--ln)}
+.ch.a{color:var(--g2)}.ch.s{color:var(--b)}
 
-.fcards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-@media(max-width:480px){.fcards{grid-template-columns:1fr}}
-.fc{background:var(--bg3);border:1px solid var(--ln);border-radius:8px;padding:11px 12px}
-.fc-name{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:7px}
-.fc input{background:var(--bg4);border:1px solid var(--ln);border-radius:6px;color:var(--g);font-family:var(--mono);font-size:17px;font-weight:500;width:100%;padding:5px 8px;outline:none;transition:border-color .18s}
-.fc input:focus{border-color:var(--g2)}
-.fc-sub{font-size:10px;color:var(--t3);margin-top:5px}
+/* BRIQUES */
+.brique-row{display:grid;grid-template-columns:1fr 80px 80px 80px 22px;gap:6px;align-items:center;padding:6px 0;border-bottom:1px solid var(--ln)}
+.brique-row:last-child{border-bottom:none}
+.brique-row.hdr-row{font-size:10px;color:var(--t3);padding-bottom:4px}
+.bi{background:transparent;border:none;color:var(--t2);font-family:var(--sans);font-size:12px;outline:none;width:100%;padding:0}
+.bi:focus{color:var(--t1)}
+.bn{background:var(--bg4);border:1px solid var(--ln);border-radius:5px;color:var(--t1);font-family:var(--mono);font-size:11px;padding:3px 6px;outline:none;text-align:right;width:100%;transition:border-color .15s}
+.bn:focus{border-color:var(--ln2)}
+.bdel{width:18px;height:18px;background:transparent;border:none;color:var(--t3);cursor:pointer;font-size:14px;display:grid;place-items:center;border-radius:4px;transition:color .15s}
+.bdel:hover{color:var(--rd)}
 
-/* VOLUME — champs numériques décimaux */
-.vol-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--ln)}
-.vol-item:last-child{border-bottom:none}
+/* FORFAIT BUILDER */
+.fblock{background:var(--bg3);border:1px solid var(--ln);border-radius:10px;padding:12px;margin-bottom:10px}
+.fblock:last-child{margin-bottom:0}
+.fb-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.fb-name{flex:1}
+.fb-name input{background:var(--bg4);border:1px solid var(--ln);border-radius:6px;color:var(--t1);font-family:var(--sans);font-size:13px;font-weight:500;width:100%;padding:5px 9px;outline:none;transition:border-color .18s}
+.fb-name input:focus{border-color:var(--ln2)}
+.fb-del{width:24px;height:24px;background:transparent;border:1px solid var(--ln);border-radius:6px;color:var(--t3);cursor:pointer;font-size:14px;display:grid;place-items:center;flex-shrink:0;transition:color .15s,border-color .15s}
+.fb-del:hover{color:var(--rd);border-color:var(--rd)}
+
+/* LIGNE DE COMPO */
+.comp-row{display:grid;grid-template-columns:1fr 100px 80px 22px;gap:6px;align-items:center;padding:5px 0;border-bottom:1px solid var(--ln)}
+.comp-row:last-child{border-bottom:none}
+.comp-select{background:var(--bg4);border:1px solid var(--ln);border-radius:5px;color:var(--t1);font-family:var(--sans);font-size:11px;padding:3px 6px;outline:none;width:100%;cursor:pointer}
+.comp-type{background:var(--bg4);border:1px solid var(--ln);border-radius:5px;color:var(--t2);font-family:var(--sans);font-size:10px;padding:3px 6px;outline:none;width:100%;cursor:pointer}
+.comp-qty{background:var(--bg4);border:1px solid var(--ln);border-radius:5px;color:var(--t1);font-family:var(--mono);font-size:11px;padding:3px 6px;outline:none;text-align:right;width:100%;transition:border-color .15s}
+.comp-qty:focus{border-color:var(--ln2)}
+.comp-cost{font-family:var(--mono);font-size:10px;color:var(--t3);text-align:right;white-space:nowrap}
+
+/* PRIX FORFAIT */
+.f-pricing{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--ln);flex-wrap:wrap}
+.f-pricing .item{display:flex;flex-direction:column;gap:3px}
+.f-pricing label{font-size:10px;color:var(--t3)}
+.f-pricing .val{font-family:var(--mono);font-size:13px;font-weight:500}
+.f-pricing .val.cost{color:var(--t3)}
+.f-pricing .val.price{color:var(--g)}
+.margin-ctrl{display:flex;align-items:center;gap:6px}
+.margin-ctrl input{background:var(--bg4);border:1px solid var(--ln);border-radius:5px;color:var(--am);font-family:var(--mono);font-size:12px;width:54px;padding:3px 6px;outline:none;text-align:right}
+.price-override input{background:var(--bg4);border:1px solid var(--g2);border-radius:5px;color:var(--g);font-family:var(--mono);font-size:13px;font-weight:500;width:90px;padding:3px 8px;outline:none;text-align:right}
+.override-toggle{font-size:10px;color:var(--t3);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.override-toggle:hover{color:var(--t1)}
+.f-tag{font-size:9px;padding:2px 7px;border-radius:4px;background:var(--gb);color:var(--g2);font-family:var(--mono)}
+
+/* VOL */
+.vol-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--ln)}
+.vol-row:last-child{border-bottom:none}
 .vol-name{flex:1;font-size:12px;color:var(--t2)}
-.vol-input-wrap{display:flex;align-items:center;gap:6px}
-.vol-input{background:var(--bg4);border:1px solid var(--ln);border-radius:6px;color:var(--t1);font-family:var(--mono);font-size:14px;font-weight:500;width:70px;padding:4px 8px;outline:none;text-align:center;transition:border-color .18s}
+.vol-price{font-family:var(--mono);font-size:11px;color:var(--t3);min-width:60px;text-align:center}
+.vol-input{background:var(--bg4);border:1px solid var(--ln);border-radius:6px;color:var(--t1);font-family:var(--mono);font-size:14px;font-weight:500;width:70px;padding:4px 8px;outline:none;text-align:center}
 .vol-input:focus{border-color:var(--ln2)}
 .vol-unit{font-size:10px;color:var(--t3)}
-.vtot{font-family:var(--mono);font-size:11px;color:var(--t3);min-width:68px;text-align:right}
+.vol-tot{font-family:var(--mono);font-size:11px;color:var(--t3);min-width:72px;text-align:right}
 
-.cr{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--ln)}
-.cr:last-child{border-bottom:none}
+/* CHARGES / RECETTES */
+.cr-row{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--ln)}
+.cr-row:last-child{border-bottom:none}
 .cr-lbl{flex:1;min-width:0}
 .cr-lbl input{background:transparent;border:none;color:var(--t2);font-family:var(--sans);font-size:12px;outline:none;width:100%;padding:0}
 .cr-lbl input:focus{color:var(--t1)}
-.cr-val input{background:var(--bg4);border:1px solid var(--ln);border-radius:5px;color:var(--t1);font-family:var(--mono);font-size:11px;width:58px;padding:3px 6px;outline:none;text-align:right;transition:border-color .15s}
-.cr-val input:focus{border-color:var(--ln2)}
-.cr-unit-toggle{display:flex;border:1px solid var(--ln);border-radius:5px;overflow:hidden;flex-shrink:0}
-.cut{padding:3px 6px;font-size:10px;background:transparent;border:none;color:var(--t3);cursor:pointer;font-family:var(--mono);transition:all .15s}
-.cut.active{background:var(--bg5);color:var(--t1)}
+.cr-num input{background:var(--bg4);border:1px solid var(--ln);border-radius:5px;color:var(--t1);font-family:var(--mono);font-size:11px;width:60px;padding:3px 6px;outline:none;text-align:right}
+.cr-num input:focus{border-color:var(--ln2)}
+.utog{display:flex;border:1px solid var(--ln);border-radius:5px;overflow:hidden;flex-shrink:0}
+.ut{padding:3px 6px;font-size:10px;background:transparent;border:none;color:var(--t3);cursor:pointer;font-family:var(--mono);transition:all .15s}
+.ut.on{background:var(--bg5);color:var(--t1)}
+.cr-comp{font-family:var(--mono);font-size:10px;color:var(--t3);min-width:54px;text-align:right}
 .cr-del{width:18px;height:18px;background:transparent;border:none;color:var(--t3);cursor:pointer;font-size:14px;display:grid;place-items:center;border-radius:4px;flex-shrink:0;transition:color .15s}
 .cr-del:hover{color:var(--rd)}
-.cr-computed{font-family:var(--mono);font-size:10px;color:var(--t3);min-width:54px;text-align:right}
+.cr-comp.g{color:var(--g)}
 
-.add-row{margin-top:9px;padding:5px;border:1px dashed var(--ln2);border-radius:7px;color:var(--t3);font-size:10px;cursor:pointer;text-align:center;transition:color .18s,border-color .18s}
+.add-row{margin-top:8px;padding:5px;border:1px dashed var(--ln2);border-radius:7px;color:var(--t3);font-size:10px;cursor:pointer;text-align:center;transition:color .18s,border-color .18s}
 .add-row:hover{color:var(--t1);border-color:var(--ln3)}
-
 .tot-bar{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--bg3);border-radius:6px;margin-top:8px}
 .tot-bar .lbl{font-size:11px;color:var(--t2)}
 .tot-bar .val{font-family:var(--mono);font-size:12px;font-weight:500}
 .warn{font-size:10px;color:var(--am);background:rgba(240,176,48,.08);border-radius:6px;padding:5px 9px;margin-top:6px}
 
+/* METRICS */
 .mets{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:8px}
 @media(max-width:520px){.mets{grid-template-columns:1fr 1fr}}
 .met{background:var(--bg3);border-radius:8px;padding:10px 11px}
 .met .lbl{font-size:10px;color:var(--t3);margin-bottom:3px}
 .met .num{font-family:var(--mono);font-size:15px;font-weight:500}
 .met .sub{font-size:10px;color:var(--t3);margin-top:2px}
-.cg{color:var(--g)}.cb{color:var(--b)}.ca{color:var(--am)}.cr2{color:var(--rd)}
+.cg{color:var(--g)}.cb{color:var(--b)}.ca{color:var(--am)}.crd{color:var(--rd)}
 
-.chart-tabs{display:flex;gap:4px;margin-bottom:10px}
+/* CHART */
+.ctabs{display:flex;gap:4px;margin-bottom:10px}
 .ctab{padding:4px 10px;font-size:10px;border-radius:6px;border:1px solid var(--ln);background:transparent;color:var(--t3);cursor:pointer;font-family:var(--sans);transition:all .15s}
-.ctab.active{background:var(--bg4);color:var(--t1);border-color:var(--ln2)}
-.chart-wrap{position:relative;width:100%;height:210px}
-.legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:9px}
-.legend span{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t2)}
+.ctab.on{background:var(--bg4);color:var(--t1);border-color:var(--ln2)}
+.cwrap{position:relative;width:100%;height:210px}
+.leg{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:9px}
+.leg span{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t2)}
 .ldot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
 
-.plafond-bar{margin-top:10px}
-.plafond-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:4px}
-.pb-track{width:100%;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
-.pb-fill{height:100%;border-radius:3px;transition:width .4s,background .4s}
-.divider{border:none;border-top:1px solid var(--ln);margin:11px 0}
+.plf-wrap{margin-top:10px}
+.plf-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:4px}
+.plf-track{width:100%;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.plf-fill{height:100%;border-radius:3px;transition:width .4s,background .4s}
+.div{border:none;border-top:1px solid var(--ln);margin:10px 0}
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <div class="hdr">
-  <div class="hdr-left">
-    <h1>Artemage × SRG Films<span class="save-dot" id="sdot"></span></h1>
+  <div>
+    <h1>Artemage × SRG Films<span class="sdot" id="sdot"></span></h1>
     <p>Prévisionnel interactif · 2026–2027</p>
   </div>
   <div class="hdr-right">
-    <span>CA mensuel</span>
-    <span class="hdr-ca" id="hdr-ca">—</span>
+    <div class="hdr-sub">CA mensuel</div>
+    <div class="hdr-ca" id="hdr-ca">—</div>
   </div>
 </div>
 
-<!-- ① OFFRE -->
-<div class="s-wrap">
-  <div class="s-head open" onclick="tog(this)">
-    <div class="s-title"><span class="s-num">1</span>Offre de services<span class="s-badge" id="b-offre">—</span></div>
-    <span class="s-arrow">▶</span>
+<!-- ① BRIQUES UNITAIRES -->
+<div class="aw">
+  <div class="ah open" onclick="tog(this)">
+    <div class="at"><span class="anum">1</span>Tarifs unitaires<span class="abadge" id="b1">—</span></div>
+    <span class="arr">▶</span>
   </div>
-  <div class="s-body open">
-    <div class="fcards">
-      <div class="fc"><div class="fc-name">Corpo Essentiel</div><input type="number" id="pe" value="2800" min="0" step="100" oninput="save();calc()"><div class="fc-sub">1j PDV · 1j post · V3</div></div>
-      <div class="fc"><div class="fc-name">Corpo Premium</div><input type="number" id="pp" value="6500" min="0" step="100" oninput="save();calc()"><div class="fc-sub">2j PDV · 2j post · Motion</div></div>
-      <div class="fc"><div class="fc-name">Contenu Récurrent</div><input type="number" id="pr" value="8500" min="0" step="100" oninput="save();calc()"><div class="fc-sub">3 × Essentiel · 6 mois</div></div>
+  <div class="ab open">
+    <div class="brique-row hdr-row">
+      <span>Prestation</span><span style="text-align:right">½ journée</span><span style="text-align:right">Journée</span><span style="text-align:right">Unité fixe</span><span></span>
     </div>
+    <div id="briques-list"></div>
+    <div class="add-row" onclick="addBrique()">+ prestation</div>
   </div>
 </div>
 
-<!-- ② VOLUME -->
-<div class="s-wrap">
-  <div class="s-head" onclick="tog(this)">
-    <div class="s-title"><span class="s-num">2</span>Volume mensuel<span class="s-badge" id="b-vol">—</span></div>
-    <span class="s-arrow">▶</span>
+<!-- ② FORFAITS -->
+<div class="aw">
+  <div class="ah open" onclick="tog(this)">
+    <div class="at"><span class="anum">2</span>Composition des forfaits<span class="abadge" id="b2">—</span></div>
+    <span class="arr">▶</span>
   </div>
-  <div class="s-body">
+  <div class="ab open">
+    <div id="forfaits-list"></div>
+    <div class="add-row" onclick="addForfait()">+ forfait</div>
+  </div>
+</div>
+
+<!-- ③ VOLUME -->
+<div class="aw">
+  <div class="ah" onclick="tog(this)">
+    <div class="at"><span class="anum">3</span>Volume mensuel<span class="abadge" id="b3">—</span></div>
+    <span class="arr">▶</span>
+  </div>
+  <div class="ab">
     <div id="vol-list"></div>
-    <div class="divider"></div>
+    <div class="div"></div>
     <div class="tot-bar"><span class="lbl">CA mensuel brut</span><span class="val ca" id="ca-tot">—</span></div>
-    <div class="plafond-bar">
-      <div class="plafond-lbl"><span>Plafond micro Artemage (77 700 € / an)</span><span id="plf-pct">—</span></div>
-      <div class="pb-track"><div class="pb-fill" id="plf-bar"></div></div>
+    <div class="plf-wrap">
+      <div class="plf-lbl"><span>Plafond micro Artemage (77 700 € / an)</span><span id="plf-pct">—</span></div>
+      <div class="plf-track"><div class="plf-fill" id="plf-fill"></div></div>
     </div>
   </div>
 </div>
 
-<!-- ③ CHARGES -->
-<div class="s-wrap">
-  <div class="s-head" onclick="tog(this)">
-    <div class="s-title"><span class="s-num">3</span>Charges<span class="s-badge" id="b-chg">—</span></div>
-    <span class="s-arrow">▶</span>
+<!-- ④ CHARGES -->
+<div class="aw">
+  <div class="ah" onclick="tog(this)">
+    <div class="at"><span class="anum">4</span>Charges<span class="abadge" id="b4">—</span></div>
+    <span class="arr">▶</span>
   </div>
-  <div class="s-body">
+  <div class="ab">
     <div class="cols">
       <div>
-        <div class="col-head a">Artemage</div>
+        <div class="ch a">Artemage</div>
         <div id="chg-m"></div>
         <div class="add-row" onclick="addChg('m')">+ poste</div>
-        <div class="tot-bar" style="margin-top:8px"><span class="lbl">Total charges</span><span class="val cr2" id="tc-m">—</span></div>
+        <div class="tot-bar" style="margin-top:8px"><span class="lbl">Total charges</span><span class="val crd" id="tc-m">—</span></div>
       </div>
       <div>
-        <div class="col-head s">SRG Films</div>
+        <div class="ch s">SRG Films</div>
         <div id="chg-s"></div>
         <div class="add-row" onclick="addChg('s')">+ poste</div>
-        <div class="tot-bar" style="margin-top:8px"><span class="lbl">Total charges</span><span class="val cr2" id="tc-s">—</span></div>
+        <div class="tot-bar" style="margin-top:8px"><span class="lbl">Total charges</span><span class="val crd" id="tc-s">—</span></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ④ RECETTES -->
-<div class="s-wrap">
-  <div class="s-head" onclick="tog(this)">
-    <div class="s-title"><span class="s-num">4</span>Dispatch recettes<span class="s-badge" id="b-rec">—</span></div>
-    <span class="s-arrow">▶</span>
+<!-- ⑤ RECETTES -->
+<div class="aw">
+  <div class="ah" onclick="tog(this)">
+    <div class="at"><span class="anum">5</span>Dispatch recettes<span class="abadge" id="b5">—</span></div>
+    <span class="arr">▶</span>
   </div>
-  <div class="s-body">
+  <div class="ab">
     <div class="cols">
       <div>
-        <div class="col-head a">Artemage — net après charges</div>
+        <div class="ch a">Artemage — net après charges</div>
         <div id="rec-m"></div>
         <div class="add-row" onclick="addRec('m')">+ destination</div>
         <div id="rw-m"></div>
       </div>
       <div>
-        <div class="col-head s">SRG — net après charges & IS</div>
+        <div class="ch s">SRG — net après charges & IS</div>
         <div id="rec-s"></div>
         <div class="add-row" onclick="addRec('s')">+ destination</div>
         <div id="rw-s"></div>
@@ -205,20 +260,20 @@ body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:13px
 <!-- METRICS -->
 <div class="mets" id="mets"></div>
 
-<!-- ⑤ COURBE -->
-<div class="s-wrap">
-  <div class="s-head" onclick="tog(this)">
-    <div class="s-title"><span class="s-num">5</span>Courbe de croissance</div>
-    <span class="s-arrow">▶</span>
+<!-- ⑥ COURBE -->
+<div class="aw">
+  <div class="ah" onclick="tog(this)">
+    <div class="at"><span class="anum">6</span>Courbe de croissance</div>
+    <span class="arr">▶</span>
   </div>
-  <div class="s-body">
-    <div class="chart-tabs">
-      <button class="ctab active" onclick="setTab('ca',this)">CA mensuel</button>
+  <div class="ab">
+    <div class="ctabs">
+      <button class="ctab on" onclick="setTab('ca',this)">CA mensuel</button>
       <button class="ctab" onclick="setTab('net',this)">Net par entité</button>
       <button class="ctab" onclick="setTab('both',this)">Vue combinée</button>
     </div>
-    <div class="legend" id="chart-legend"></div>
-    <div class="chart-wrap"><canvas id="cChart"></canvas></div>
+    <div class="leg" id="chart-leg"></div>
+    <div class="cwrap"><canvas id="cChart"></canvas></div>
     <div style="font-size:10px;color:var(--t3);margin-top:8px">Montée progressive sur 6 mois · ACRE → 22% en sept. 2026</div>
   </div>
 </div>
@@ -226,18 +281,48 @@ body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:13px
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-const F = n => {
-  const r = Math.round(n*10)/10;
-  return r.toLocaleString('fr-FR') + ' €';
-};
-const STORE = 'artemage_v5';
+const F = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+const STORE = 'artemage_v6';
 let mainChart, chartTab = 'ca', saveTimer;
 
 // ── DEFAULT STATE ────────────────────────────────────────────────────────────
 
 const DEF = {
-  pe:2800, pp:6500, pr:8500,
-  ve:3, vp:0.5, vr:0,
+  briques: [
+    {id:'b1', name:'Cadreur équipé',               hj:450, j:800,  u:0},
+    {id:'b2', name:'Photographe équipé',            hj:450, j:800,  u:0},
+    {id:'b3', name:'Assistant polyvalent',          hj:250, j:450,  u:0},
+    {id:'b4', name:'Monteur / Post-production',     hj:450, j:800,  u:0},
+    {id:'b5', name:'Moodboard / Direction visuelle',hj:0,   j:0,    u:300},
+    {id:'b6', name:'Traitement créatif complet',    hj:0,   j:0,    u:900},
+  ],
+  forfaits: [
+    {
+      id:'f1', name:'Corpo Essentiel', override:false, overridePrice:2800, marge:5,
+      compo:[
+        {id:'c1',briqId:'b1',type:'j',qty:1},
+        {id:'c2',briqId:'b4',type:'j',qty:2},
+        {id:'c3',briqId:'_fix',type:'fix',qty:400,label:'Budget matos'},
+        {id:'c4',briqId:'_fix',type:'fix',qty:50,label:'Frais divers'},
+      ]
+    },
+    {
+      id:'f2', name:'Corpo Premium', override:false, overridePrice:6500, marge:8,
+      compo:[
+        {id:'c5',briqId:'b1',type:'j',qty:2},
+        {id:'c6',briqId:'b4',type:'j',qty:2},
+        {id:'c7',briqId:'_fix',type:'fix',qty:800,label:'Budget matos'},
+        {id:'c8',briqId:'_fix',type:'fix',qty:50,label:'Frais divers'},
+      ]
+    },
+    {
+      id:'f3', name:'Contenu Récurrent', override:true, overridePrice:8500, marge:5,
+      compo:[
+        {id:'c9',briqId:'_forfait',type:'forfait',qty:3,forfaitRef:'f1',label:'× Corpo Essentiel'},
+      ]
+    },
+  ],
+  vols: [{id:'v1',forfaitId:'f1',qty:3},{id:'v2',forfaitId:'f2',qty:0.5},{id:'v3',forfaitId:'f3',qty:0}],
   cM:[
     {id:'m1',lbl:'Charges sociales (ACRE)',val:11,unit:'%'},
     {id:'m2',lbl:'Remboursement matos',val:15,unit:'%'},
@@ -252,154 +337,304 @@ const DEF = {
     {id:'s4',lbl:'Assurance MMA',val:55,unit:'€'},
   ],
   rM:[
-    {id:'rm1',lbl:'Salaire net Marcus',val:70},
-    {id:'rm2',lbl:'Épargne / trésorerie',val:20},
-    {id:'rm3',lbl:'Développement',val:10},
+    {id:'rm1',lbl:'Salaire net Marcus',val:70,unit:'%'},
+    {id:'rm2',lbl:'Épargne / trésorerie',val:20,unit:'%'},
+    {id:'rm3',lbl:'Développement',val:10,unit:'%'},
   ],
   rS:[
-    {id:'rs1',lbl:'Salaire Sébastien',val:75},
-    {id:'rs2',lbl:'Trésorerie SRG',val:25},
+    {id:'rs1',lbl:'Salaire Sébastien',val:75,unit:'%'},
+    {id:'rs2',lbl:'Trésorerie SRG',val:25,unit:'%'},
   ]
 };
 
-// ── PERSIST ──────────────────────────────────────────────────────────────────
+// ── LOAD / SAVE ──────────────────────────────────────────────────────────────
+
+function loadState() {
+  try {
+    const r = localStorage.getItem(STORE);
+    if(!r) return JSON.parse(JSON.stringify(DEF));
+    return {...JSON.parse(JSON.stringify(DEF)), ...JSON.parse(r)};
+  } catch(e){ return JSON.parse(JSON.stringify(DEF)); }
+}
+
+let ST = loadState();
 
 function save() {
   clearTimeout(saveTimer);
   saveTimer = setTimeout(()=>{
-    const state = {
-      pe: +document.getElementById('pe').value,
-      pp: +document.getElementById('pp').value,
-      pr: +document.getElementById('pr').value,
-      ve: +document.getElementById('ve').value,
-      vp: +document.getElementById('vp').value,
-      vr: +document.getElementById('vr').value,
-      cM: JSON.parse(JSON.stringify(cM)),
-      cS: JSON.parse(JSON.stringify(cS)),
-      rM: JSON.parse(JSON.stringify(rM)),
-      rS: JSON.parse(JSON.stringify(rS)),
-    };
     try {
-      localStorage.setItem(STORE, JSON.stringify(state));
-      const dot = document.getElementById('sdot');
-      dot.classList.add('show');
-      setTimeout(()=>dot.classList.remove('show'), 1200);
+      localStorage.setItem(STORE, JSON.stringify(ST));
+      const d = document.getElementById('sdot');
+      d.classList.add('on');
+      setTimeout(()=>d.classList.remove('on'),1200);
     } catch(e){}
-  }, 600);
+  }, 500);
 }
 
-function load() {
-  try {
-    const raw = localStorage.getItem(STORE);
-    if(!raw) return DEF;
-    return {...DEF, ...JSON.parse(raw)};
-  } catch(e){ return DEF; }
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+
+function uid(){ return '_'+Math.random().toString(36).slice(2,8); }
+function tog(h){ h.classList.toggle('open'); h.nextElementSibling.classList.toggle('open'); }
+
+function briquePrix(b, type, qty) {
+  if(type==='hj') return b.hj * qty;
+  if(type==='j')  return b.j  * qty;
+  if(type==='u')  return b.u  * qty;
+  return 0;
 }
 
-// ── INIT STATE ───────────────────────────────────────────────────────────────
+function forfaitCout(f) {
+  let total = 0;
+  for(const c of f.compo) {
+    if(c.type==='fix') { total += c.qty||0; continue; }
+    if(c.type==='forfait') {
+      const ref = ST.forfaits.find(x=>x.id===c.forfaitRef);
+      if(ref) total += forfaitPrix(ref) * (c.qty||1);
+      continue;
+    }
+    const b = ST.briques.find(x=>x.id===c.briqId);
+    if(b) total += briquePrix(b, c.type, c.qty||1);
+  }
+  return total;
+}
 
-const stored = load();
-let cM = stored.cM.map(c=>({...c}));
-let cS = stored.cS.map(c=>({...c}));
-let rM = stored.rM.map(c=>({...c}));
-let rS = stored.rS.map(c=>({...c}));
+function forfaitPrix(f) {
+  if(f.override) return f.overridePrice||0;
+  const cout = forfaitCout(f);
+  return cout * (1 + (f.marge||0)/100);
+}
 
-// ── ACCORDION ────────────────────────────────────────────────────────────────
+// ── BRIQUES ──────────────────────────────────────────────────────────────────
 
-function tog(h){
-  h.classList.toggle('open');
-  h.nextElementSibling.classList.toggle('open');
+function renderBriques() {
+  document.getElementById('briques-list').innerHTML = ST.briques.map(b=>`
+    <div class="brique-row">
+      <div><input class="bi" value="${b.name}" oninput="ST.briques.find(x=>x.id==='${b.id}').name=this.value;save();renderForfaits();calc()"></div>
+      <input class="bn" type="number" value="${b.hj}" min="0" step="50" oninput="ST.briques.find(x=>x.id==='${b.id}').hj=+this.value;save();calc()">
+      <input class="bn" type="number" value="${b.j}"  min="0" step="50" oninput="ST.briques.find(x=>x.id==='${b.id}').j=+this.value;save();calc()">
+      <input class="bn" type="number" value="${b.u}"  min="0" step="50" oninput="ST.briques.find(x=>x.id==='${b.id}').u=+this.value;save();calc()">
+      <button class="bdel" onclick="ST.briques=ST.briques.filter(x=>x.id!=='${b.id}');save();renderBriques();renderForfaits();calc()">×</button>
+    </div>`).join('');
+  document.getElementById('b1').textContent = ST.briques.map(b=>b.name).join(' · ');
+}
+
+function addBrique() {
+  ST.briques.push({id:uid(),name:'Nouvelle prestation',hj:0,j:0,u:0});
+  save(); renderBriques(); renderForfaits();
+}
+
+// ── FORFAITS ─────────────────────────────────────────────────────────────────
+
+function briqOptions(selected) {
+  const opts = ST.briques.map(b=>`<option value="${b.id}" ${b.id===selected?'selected':''}>${b.name}</option>`).join('');
+  return `<option value="_fix" ${selected==='_fix'?'selected':''}>Coût fixe</option>${opts}`;
+}
+
+function typeOptions(briqId, selected) {
+  if(briqId==='_fix') return `<option value="fix">€ fixe</option>`;
+  const b = ST.briques.find(x=>x.id===briqId);
+  if(!b) return '';
+  let opts = '';
+  if(b.hj) opts += `<option value="hj" ${selected==='hj'?'selected':''}>½ journée</option>`;
+  if(b.j)  opts += `<option value="j"  ${selected==='j' ?'selected':''}>Journée</option>`;
+  if(b.u)  opts += `<option value="u"  ${selected==='u' ?'selected':''}>Unité</option>`;
+  return opts || `<option value="j">Journée</option>`;
+}
+
+function renderForfaits() {
+  document.getElementById('forfaits-list').innerHTML = ST.forfaits.map(f=>{
+    const cout = forfaitCout(f);
+    const prix = forfaitPrix(f);
+    const compoHTML = f.compo.map(c=>{
+      let lineLabel, lineType, lineCost;
+      if(c.type==='fix'){
+        lineLabel = `<input class="bi" value="${c.label||'Coût fixe'}" style="font-size:11px" oninput="getComp('${f.id}','${c.id}').label=this.value;save();calc()">`;
+        lineType  = `<span class="comp-cost" style="color:var(--t3)">forfait</span>`;
+        lineCost  = c.qty||0;
+      } else if(c.type==='forfait'){
+        const ref = ST.forfaits.find(x=>x.id===c.forfaitRef);
+        lineLabel = `<span style="font-size:11px;color:var(--t2)">${ref?ref.name:'?'} × ${c.qty}</span>`;
+        lineType  = `<span class="comp-cost">×${c.qty}</span>`;
+        lineCost  = ref ? forfaitPrix(ref)*c.qty : 0;
+      } else {
+        const b = ST.briques.find(x=>x.id===c.briqId);
+        lineLabel = `<select class="comp-select" onchange="getComp('${f.id}','${c.id}').briqId=this.value;getComp('${f.id}','${c.id}').type=this.value==='_fix'?'fix':'j';save();renderForfaits();calc()">${briqOptions(c.briqId)}</select>`;
+        lineType  = `<select class="comp-type" onchange="getComp('${f.id}','${c.id}').type=this.value;save();renderForfaits();calc()">${typeOptions(c.briqId,c.type)}</select>`;
+        lineCost  = b ? briquePrix(b,c.type,c.qty) : 0;
+      }
+      return `<div class="comp-row">
+        <div class="cr-lbl">${lineLabel}</div>
+        <div>${lineType}</div>
+        <input class="comp-qty" type="number" value="${c.qty}" min="0" step="0.5" oninput="getComp('${f.id}','${c.id}').qty=+this.value;save();renderForfaits();calc()">
+        <span class="comp-cost">${F(lineCost)}</span>
+        <button class="bdel" onclick="delComp('${f.id}','${c.id}')">×</button>
+      </div>`;
+    }).join('');
+
+    return `<div class="fblock">
+      <div class="fb-head">
+        <div class="fb-name"><input value="${f.name}" oninput="ST.forfaits.find(x=>x.id==='${f.id}').name=this.value;save();renderVol();calc()"></div>
+        <span class="f-tag">${F(prix)}</span>
+        <button class="fb-del" onclick="ST.forfaits=ST.forfaits.filter(x=>x.id!=='${f.id}');save();renderForfaits();renderVol();calc()">×</button>
+      </div>
+      ${compoHTML}
+      <div class="add-row" style="margin-top:8px" onclick="addComp('${f.id}')">+ ligne</div>
+      <div class="f-pricing">
+        <div class="item"><label>Coût de revient</label><span class="val cost">${F(cout)}</span></div>
+        <div class="item"><label>Marge</label>
+          <div class="margin-ctrl">
+            <input type="number" value="${f.marge||0}" min="0" max="200" step="1"
+              ${f.override?'disabled style="opacity:.4"':''}
+              oninput="ST.forfaits.find(x=>x.id==='${f.id}').marge=+this.value;save();renderForfaits();calc()">
+            <span style="font-size:10px;color:var(--t3)">%</span>
+          </div>
+        </div>
+        <div class="item"><label>Prix calculé</label><span class="val ${f.override?'cost':'price'}">${F(cout*(1+(f.marge||0)/100))}</span></div>
+        ${f.override
+          ? `<div class="item"><label>Prix final (manuel)</label>
+              <div class="price-override"><input type="number" value="${f.overridePrice||0}" step="100"
+                oninput="ST.forfaits.find(x=>x.id==='${f.id}').overridePrice=+this.value;save();renderForfaits();renderVol();calc()"></div>
+             </div>`
+          : ''}
+        <div class="item" style="margin-left:auto">
+          <label></label>
+          <span class="override-toggle" onclick="ST.forfaits.find(x=>x.id==='${f.id}').override=!${f.override};save();renderForfaits();calc()">
+            ${f.override?'← utiliser le calcul':'écraser le prix'}
+          </span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const prices = ST.forfaits.map(f=>f.name+' '+F(forfaitPrix(f))).join(' · ');
+  document.getElementById('b2').textContent = prices;
+}
+
+function getComp(fid, cid) {
+  const f = ST.forfaits.find(x=>x.id===fid);
+  return f ? f.compo.find(c=>c.id===cid) : null;
+}
+
+function addComp(fid) {
+  const f = ST.forfaits.find(x=>x.id===fid);
+  if(!f) return;
+  const b = ST.briques[0];
+  f.compo.push({id:uid(), briqId:b?b.id:'_fix', type:b?'j':'fix', qty:1, label:'Coût fixe'});
+  save(); renderForfaits(); calc();
+}
+
+function delComp(fid, cid) {
+  const f = ST.forfaits.find(x=>x.id===fid);
+  if(f) f.compo = f.compo.filter(c=>c.id!==cid);
+  save(); renderForfaits(); calc();
+}
+
+function addForfait() {
+  ST.forfaits.push({id:uid(), name:'Nouveau forfait', override:false, overridePrice:0, marge:10, compo:[]});
+  save(); renderForfaits(); renderVol();
 }
 
 // ── VOLUME ───────────────────────────────────────────────────────────────────
 
-function buildVol() {
-  const items = [
-    {id:'ve', name:'Corpo Essentiel'},
-    {id:'vp', name:'Corpo Premium'},
-    {id:'vr', name:'Contenu Récurrent'},
-  ];
-  document.getElementById('vol-list').innerHTML = items.map(it=>`
-    <div class="vol-item">
-      <span class="vol-name">${it.name}</span>
-      <div class="vol-input-wrap">
-        <input type="number" class="vol-input" id="${it.id}" value="${stored[it.id]}" min="0" step="0.5" oninput="save();calc()">
-        <span class="vol-unit">/ mois</span>
-      </div>
-      <span class="vtot" id="vt-${it.id}"></span>
-    </div>`).join('');
+function renderVol() {
+  // Sync vols with forfaits
+  ST.forfaits.forEach(f=>{
+    if(!ST.vols.find(v=>v.forfaitId===f.id))
+      ST.vols.push({id:uid(),forfaitId:f.id,qty:0});
+  });
+  ST.vols = ST.vols.filter(v=>ST.forfaits.find(f=>f.id===v.forfaitId));
+
+  document.getElementById('vol-list').innerHTML = ST.vols.map(v=>{
+    const f = ST.forfaits.find(x=>x.id===v.forfaitId);
+    if(!f) return '';
+    const p = forfaitPrix(f);
+    return `<div class="vol-row">
+      <span class="vol-name">${f.name}</span>
+      <span class="vol-price">${F(p)}</span>
+      <input class="vol-input" type="number" value="${v.qty}" min="0" step="0.5"
+        oninput="ST.vols.find(x=>x.id==='${v.id}').qty=+this.value;save();calc()">
+      <span class="vol-unit">/ mois</span>
+      <span class="vol-tot" id="vt-${v.id}"></span>
+    </div>`;
+  }).join('');
 }
 
 // ── CHARGES ──────────────────────────────────────────────────────────────────
 
-function buildChg(e){
-  const arr = e==='m'?cM:cS;
+function renderChg(e) {
+  const arr = e==='m'?ST.cM:ST.cS;
   document.getElementById('chg-'+e).innerHTML = arr.map(c=>`
-    <div class="cr" id="cr-${c.id}">
-      <div class="cr-lbl"><input type="text" value="${c.lbl}" oninput="updChg('${e}','${c.id}','lbl',this.value)"></div>
-      <div class="cr-val"><input type="number" value="${c.val}" min="0" step="${c.unit==='%'?1:5}" oninput="updChg('${e}','${c.id}','val',this.value)"></div>
-      <div class="cr-unit-toggle">
-        <button class="cut ${c.unit==='%'?'active':''}" onclick="setUnit('${e}','${c.id}','%',this)">%</button>
-        <button class="cut ${c.unit==='€'?'active':''}" onclick="setUnit('${e}','${c.id}','€',this)">€</button>
+    <div class="cr-row">
+      <div class="cr-lbl"><input type="text" value="${c.lbl}" oninput="(ST.${e==='m'?'cM':'cS'}).find(x=>x.id==='${c.id}').lbl=this.value;save()"></div>
+      <div class="cr-num"><input type="number" value="${c.val}" min="0" step="${c.unit==='%'?1:5}" oninput="(ST.${e==='m'?'cM':'cS'}).find(x=>x.id==='${c.id}').val=+this.value;save();calc()"></div>
+      <div class="utog">
+        <button class="ut ${c.unit==='%'?'on':''}" onclick="setChgUnit('${e}','${c.id}','%',this)">%</button>
+        <button class="ut ${c.unit==='€'?'on':''}" onclick="setChgUnit('${e}','${c.id}','€',this)">€</button>
       </div>
-      <span class="cr-computed" id="cc-${c.id}"></span>
+      <span class="cr-comp" id="cc-${c.id}"></span>
       <button class="cr-del" onclick="delChg('${e}','${c.id}')">×</button>
     </div>`).join('');
 }
 
-function setUnit(e,id,unit,btn){
-  const c=(e==='m'?cM:cS).find(x=>x.id===id);
+function setChgUnit(e,id,unit,btn){
+  const arr=e==='m'?ST.cM:ST.cS;
+  const c=arr.find(x=>x.id===id);
   if(c) c.unit=unit;
-  btn.parentElement.querySelectorAll('.cut').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  save(); calc();
-}
-function updChg(e,id,field,val){
-  const c=(e==='m'?cM:cS).find(x=>x.id===id);
-  if(c) c[field]=field==='val'?(parseFloat(val)||0):val;
+  btn.parentElement.querySelectorAll('.ut').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
   save(); calc();
 }
 function delChg(e,id){
-  if(e==='m') cM=cM.filter(c=>c.id!==id);
-  else cS=cS.filter(c=>c.id!==id);
-  buildChg(e); save(); calc();
+  if(e==='m') ST.cM=ST.cM.filter(c=>c.id!==id);
+  else ST.cS=ST.cS.filter(c=>c.id!==id);
+  renderChg(e); save(); calc();
 }
 function addChg(e){
-  const id=e+Date.now();
-  (e==='m'?cM:cS).push({id,lbl:'Nouveau poste',val:0,unit:'€'});
-  buildChg(e); save(); calc();
+  const id=uid();
+  (e==='m'?ST.cM:ST.cS).push({id,lbl:'Nouveau poste',val:0,unit:'€'});
+  renderChg(e); save(); calc();
 }
 
 // ── RECETTES ─────────────────────────────────────────────────────────────────
 
-function buildRec(e, net){
-  const arr = e==='m'?rM:rS;
-  const tot = arr.reduce((s,r)=>s+r.val,0);
-  document.getElementById('rec-'+e).innerHTML = arr.map(r=>`
-    <div class="cr" id="rr-${r.id}">
-      <div class="cr-lbl"><input type="text" value="${r.lbl}" oninput="updRec('${e}','${r.id}','lbl',this.value)"></div>
-      <div class="cr-val"><input type="number" value="${r.val}" min="0" max="100" step="1" oninput="updRec('${e}','${r.id}','val',this.value)"></div>
-      <div class="cr-unit-toggle" style="pointer-events:none;opacity:.35"><button class="cut active">%</button></div>
-      <span class="cr-computed" style="color:var(--g)">${F(net*(r.val/100))}</span>
+function renderRec(e, net) {
+  const arr = e==='m'?ST.rM:ST.rS;
+  const tot = arr.reduce((s,r)=>{
+    return s + (r.unit==='%' ? net*(r.val/100) : r.val);
+  }, 0);
+  document.getElementById('rec-'+e).innerHTML = arr.map(r=>{
+    const computed = r.unit==='%' ? net*(r.val/100) : r.val;
+    return `<div class="cr-row">
+      <div class="cr-lbl"><input type="text" value="${r.lbl}" oninput="(ST.${e==='m'?'rM':'rS'}).find(x=>x.id==='${r.id}').lbl=this.value;save()"></div>
+      <div class="cr-num"><input type="number" value="${r.val}" min="0" step="${r.unit==='%'?1:10}" oninput="(ST.${e==='m'?'rM':'rS'}).find(x=>x.id==='${r.id}').val=+this.value;save();calc()"></div>
+      <div class="utog">
+        <button class="ut ${r.unit==='%'?'on':''}" onclick="setRecUnit('${e}','${r.id}','%',this)">%</button>
+        <button class="ut ${r.unit==='€'?'on':''}" onclick="setRecUnit('${e}','${r.id}','€',this)">€</button>
+      </div>
+      <span class="cr-comp g">${F(computed)}</span>
       <button class="cr-del" onclick="delRec('${e}','${r.id}')">×</button>
-    </div>`).join('');
-  document.getElementById('rw-'+e).innerHTML = tot!==100
-    ? `<div class="warn">Total : ${tot}% ≠ 100%</div>` : '';
+    </div>`;
+  }).join('');
+
+  const ecart = Math.abs(tot-net);
+  document.getElementById('rw-'+e).innerHTML = ecart>1
+    ? `<div class="warn">Dispatché : ${F(tot)} / Net : ${F(net)} — écart ${F(ecart)}</div>` : '';
 }
 
-function updRec(e,id,field,val){
-  const r=(e==='m'?rM:rS).find(x=>x.id===id);
-  if(r) r[field]=field==='val'?(parseFloat(val)||0):val;
+function setRecUnit(e,id,unit,btn){
+  const r=(e==='m'?ST.rM:ST.rS).find(x=>x.id===id);
+  if(r) r.unit=unit;
+  btn.parentElement.querySelectorAll('.ut').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
   save(); calc();
 }
 function delRec(e,id){
-  if(e==='m') rM=rM.filter(r=>r.id!==id);
-  else rS=rS.filter(r=>r.id!==id);
+  if(e==='m') ST.rM=ST.rM.filter(r=>r.id!==id);
+  else ST.rS=ST.rS.filter(r=>r.id!==id);
   save(); calc();
 }
 function addRec(e){
-  const id='r'+e+Date.now();
-  (e==='m'?rM:rS).push({id,lbl:'Nouvelle destination',val:0});
+  (e==='m'?ST.rM:ST.rS).push({id:uid(),lbl:'Nouvelle destination',val:0,unit:'%'});
   save(); calc();
 }
 
@@ -407,120 +642,106 @@ function addRec(e){
 
 function setTab(t,btn){
   chartTab=t;
-  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
   calc();
 }
 
 // ── MAIN CALC ────────────────────────────────────────────────────────────────
 
-function calc(){
-  const pe=+document.getElementById('pe').value||0;
-  const pp=+document.getElementById('pp').value||0;
-  const pr=+document.getElementById('pr').value||0;
-  const ve=+document.getElementById('ve').value||0;
-  const vp=+document.getElementById('vp').value||0;
-  const vr=+document.getElementById('vr').value||0;
+function calc() {
+  const caMonth = ST.vols.reduce((s,v)=>{
+    const f=ST.forfaits.find(x=>x.id===v.forfaitId);
+    const el=document.getElementById('vt-'+v.id);
+    if(f){ const t=forfaitPrix(f)*v.qty; if(el) el.textContent=F(t); return s+t; }
+    return s;
+  }, 0);
 
-  // Vol totals
-  [['ve',ve,pe],['vp',vp,pp],['vr',vr,pr]].forEach(([id,v,p])=>{
-    const el=document.getElementById('vt-'+id);
-    if(el) el.textContent = F(v*p)+'/mois';
-  });
-
-  const caMonth = ve*pe + vp*pp + vr*pr;
   document.getElementById('ca-tot').textContent = F(caMonth);
   document.getElementById('hdr-ca').textContent = F(caMonth);
-
-  // Badges
-  document.getElementById('b-offre').textContent = `${pe}€ · ${pp}€ · ${pr}€`;
-  document.getElementById('b-vol').textContent = `${ve}E · ${vp}P · ${vr}R → ${Math.round(caMonth).toLocaleString('fr-FR')}€`;
+  document.getElementById('b3').textContent = `${ST.vols.filter(v=>v.qty>0).map(v=>{const f=ST.forfaits.find(x=>x.id===v.forfaitId);return f?v.qty+'× '+f.name:''}).filter(Boolean).join(' · ')} → ${F(caMonth)}`;
 
   // Plafond
-  const plfPct = Math.min(100, Math.round(caMonth*12/77700*100));
-  document.getElementById('plf-pct').textContent = plfPct+'% du plafond';
-  const bar = document.getElementById('plf-bar');
-  bar.style.width = plfPct+'%';
-  bar.style.background = plfPct>=90?'#f07070':plfPct>=70?'#f0b030':'#b8e830';
+  const plf = Math.min(100, Math.round(caMonth*12/77700*100));
+  document.getElementById('plf-pct').textContent = plf+'% du plafond annuel';
+  const pf = document.getElementById('plf-fill');
+  pf.style.width=plf+'%';
+  pf.style.background=plf>=90?'#f07070':plf>=70?'#f0b030':'#b8e830';
 
-  // Charges Marcus
-  let totCM=0;
-  cM.forEach(c=>{
-    const v = c.unit==='%' ? caMonth*(c.val/100) : c.val;
+  // Charges
+  let totCM=0, totCS=0;
+  ST.cM.forEach(c=>{
+    const v=c.unit==='%'?caMonth*(c.val/100):c.val;
     totCM+=v;
     const el=document.getElementById('cc-'+c.id);
-    if(el) el.textContent = c.unit==='%' ? F(v) : '';
+    if(el) el.textContent=c.unit==='%'?F(v):'';
   });
-  document.getElementById('tc-m').textContent = '− '+F(totCM);
-
-  // Charges SRG
-  let totCS=0;
-  cS.forEach(c=>{
-    const v = c.unit==='%' ? caMonth*(c.val/100) : c.val;
+  ST.cS.forEach(c=>{
+    const v=c.unit==='%'?caMonth*(c.val/100):c.val;
     totCS+=v;
     const el=document.getElementById('cc-'+c.id);
-    if(el) el.textContent = c.unit==='%' ? F(v) : '';
+    if(el) el.textContent=c.unit==='%'?F(v):'';
   });
-  document.getElementById('tc-s').textContent = '− '+F(totCS);
-  document.getElementById('b-chg').textContent = '− '+F(totCM+totCS);
+  document.getElementById('tc-m').textContent='− '+F(totCM);
+  document.getElementById('tc-s').textContent='− '+F(totCS);
+  document.getElementById('b4').textContent='Artemage − '+F(totCM)+' · SRG − '+F(totCS);
 
-  const netM = Math.max(0, caMonth-totCM);
-  const netS = Math.max(0, caMonth-totCS);
+  const netM = Math.max(0,caMonth-totCM);
+  const netS = Math.max(0,caMonth-totCS);
 
-  buildRec('m', netM);
-  buildRec('s', netS);
+  renderRec('m',netM);
+  renderRec('s',netS);
 
-  const salM = rM.find(r=>r.id==='rm1');
-  const salS = rS.find(r=>r.id==='rs1');
-  const netMSal = salM ? netM*(salM.val/100) : 0;
-  const netSSal = salS ? netS*(salS.val/100) : 0;
-  document.getElementById('b-rec').textContent = F(netMSal)+' · '+F(netSSal);
+  // Salaires principaux
+  const salM = ST.rM[0]?( ST.rM[0].unit==='%'? netM*(ST.rM[0].val/100):ST.rM[0].val ):0;
+  const salS = ST.rS[0]?( ST.rS[0].unit==='%'? netS*(ST.rS[0].val/100):ST.rS[0].val ):0;
+  document.getElementById('b5').textContent = F(salM)+' Marcus · '+F(salS)+' Sébastien';
 
   // Métriques
-  document.getElementById('mets').innerHTML = `
-    <div class="met"><div class="lbl">CA mensuel</div><div class="num ca">${F(caMonth)}</div><div class="sub">${ve}E · ${vp}P · ${vr}R</div></div>
-    <div class="met"><div class="lbl">Net Marcus</div><div class="num cg">${F(netMSal)}</div><div class="sub">Après charges</div></div>
-    <div class="met"><div class="lbl">Net Sébastien</div><div class="num cb">${F(netSSal)}</div><div class="sub">Après charges SRG</div></div>
-    <div class="met"><div class="lbl">CA annuel</div><div class="num ca">${F(caMonth*12)}</div><div class="sub">× 12 mois</div></div>
+  document.getElementById('mets').innerHTML=`
+    <div class="met"><div class="lbl">CA mensuel</div><div class="num ca">${F(caMonth)}</div><div class="sub">${ST.vols.filter(v=>v.qty>0).length} forfait(s) actifs</div></div>
+    <div class="met"><div class="lbl">Net Marcus</div><div class="num cg">${F(salM)}</div><div class="sub">Après charges</div></div>
+    <div class="met"><div class="lbl">Net Sébastien</div><div class="num cb">${F(salS)}</div><div class="sub">Après charges SRG</div></div>
+    <div class="met"><div class="lbl">CA annuel</div><div class="num ca">${F(caMonth*12)}</div><div class="sub">Projection × 12</div></div>
   `;
 
   // Courbe
-  const labels=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
-  const g=i=>Math.min(1,0.3+i*0.1);
-  const acre=i=>i<5?1:0.89;
-  const dCA   = labels.map((_,i)=>Math.round(caMonth*g(i)));
-  const dNetM = labels.map((_,i)=>Math.round(netMSal*g(i)*acre(i)));
-  const dNetS = labels.map((_,i)=>Math.round(netSSal*g(i)));
-  const dSeuil= labels.map(()=>2000);
+  const labs=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+  const g=i=>Math.min(1,.3+i*.1);
+  const acre=i=>i<5?1:.89;
+  const dCA   =labs.map((_,i)=>Math.round(caMonth*g(i)));
+  const dNetM =labs.map((_,i)=>Math.round(salM*g(i)*acre(i)));
+  const dNetS =labs.map((_,i)=>Math.round(salS*g(i)));
+  const dSeuil=labs.map(()=>2000);
 
-  let datasets, legend;
+  let datasets,legend;
   if(chartTab==='ca'){
     datasets=[
       {label:'CA Artemage',data:dCA,borderColor:'#b8e830',backgroundColor:'rgba(184,232,48,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
-      {label:'CA SRG',     data:dCA,borderColor:'#70b8f0',backgroundColor:'rgba(112,184,240,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:1.5,borderDash:[5,3]},
+      {label:'CA SRG',data:dCA,borderColor:'#70b8f0',backgroundColor:'rgba(112,184,240,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:1.5,borderDash:[5,3]},
     ];
-    legend=[{c:'#b8e830',l:'CA Artemage (si Marcus facture)'},{c:'#70b8f0',l:'CA SRG (si Sébastien facture)'}];
+    legend=[{c:'#b8e830',l:'CA si Artemage facture'},{c:'#70b8f0',l:'CA si SRG facture'}];
   } else if(chartTab==='net'){
     datasets=[
-      {label:'Net Marcus',    data:dNetM, borderColor:'#b8e830',backgroundColor:'rgba(184,232,48,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
-      {label:'Net Sébastien', data:dNetS, borderColor:'#70b8f0',backgroundColor:'rgba(112,184,240,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
+      {label:'Net Marcus',data:dNetM,borderColor:'#b8e830',backgroundColor:'rgba(184,232,48,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
+      {label:'Net Sébastien',data:dNetS,borderColor:'#70b8f0',backgroundColor:'rgba(112,184,240,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
       {label:'Seuil 2 000 €',data:dSeuil,borderColor:'rgba(240,112,112,.4)',backgroundColor:'transparent',pointRadius:0,borderWidth:1,borderDash:[2,4]},
     ];
     legend=[{c:'#b8e830',l:'Net Marcus'},{c:'#70b8f0',l:'Net Sébastien'},{c:'#f07070',l:'Seuil 2 000 €'}];
   } else {
     datasets=[
-      {label:'CA mensuel',    data:dCA,   borderColor:'rgba(240,176,48,.6)',backgroundColor:'transparent',tension:.4,pointRadius:0,borderWidth:1.5,borderDash:[4,3]},
-      {label:'Net Marcus',    data:dNetM, borderColor:'#b8e830',backgroundColor:'rgba(184,232,48,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
-      {label:'Net Sébastien', data:dNetS, borderColor:'#70b8f0',backgroundColor:'rgba(112,184,240,.06)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
+      {label:'CA',data:dCA,borderColor:'rgba(240,176,48,.6)',backgroundColor:'transparent',tension:.4,pointRadius:0,borderWidth:1.5,borderDash:[4,3]},
+      {label:'Net Marcus',data:dNetM,borderColor:'#b8e830',backgroundColor:'rgba(184,232,48,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
+      {label:'Net Sébastien',data:dNetS,borderColor:'#70b8f0',backgroundColor:'rgba(112,184,240,.06)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
       {label:'Seuil 2 000 €',data:dSeuil,borderColor:'rgba(240,112,112,.4)',backgroundColor:'transparent',pointRadius:0,borderWidth:1,borderDash:[2,4]},
     ];
-    legend=[{c:'#f0b030',l:'CA mensuel'},{c:'#b8e830',l:'Net Marcus'},{c:'#70b8f0',l:'Net Sébastien'},{c:'#f07070',l:'Seuil 2 000 €'}];
+    legend=[{c:'#f0b030',l:'CA'},{c:'#b8e830',l:'Net Marcus'},{c:'#70b8f0',l:'Net Sébastien'},{c:'#f07070',l:'Seuil 2 000 €'}];
   }
 
-  document.getElementById('chart-legend').innerHTML = legend.map(l=>`<span><span class="ldot" style="background:${l.c}"></span>${l.l}</span>`).join('');
+  document.getElementById('chart-leg').innerHTML=legend.map(l=>`<span><span class="ldot" style="background:${l.c}"></span>${l.l}</span>`).join('');
   if(mainChart) mainChart.destroy();
-  mainChart = new Chart(document.getElementById('cChart'),{
-    type:'line', data:{labels,datasets},
+  mainChart=new Chart(document.getElementById('cChart'),{
+    type:'line',data:{labels:labs,datasets},
     options:{
       responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+' : '+Math.round(ctx.raw).toLocaleString('fr-FR')+' €'}}},
@@ -534,13 +755,11 @@ function calc(){
 
 // ── INIT ─────────────────────────────────────────────────────────────────────
 
-document.getElementById('pe').value = stored.pe;
-document.getElementById('pp').value = stored.pp;
-document.getElementById('pr').value = stored.pr;
-
-buildVol();
-buildChg('m');
-buildChg('s');
+renderBriques();
+renderForfaits();
+renderVol();
+renderChg('m');
+renderChg('s');
 calc();
 </script>
 </body>
