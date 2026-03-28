@@ -10,14 +10,14 @@
   --bg:#171715;--bg2:#1f1f1d;--bg3:#272725;--bg4:#303030;--bg5:#3a3a38;
   --ln:rgba(255,255,255,.06);--ln2:rgba(255,255,255,.11);--ln3:rgba(255,255,255,.2);
   --t1:#edeae2;--t2:#9a9790;--t3:#57564f;
-  --g:#b8e830;--g2:#7ab020;--gb:rgba(184,232,48,.08);
-  --b:#70b8f0;--bb:rgba(112,184,240,.08);
-  --am:#f0b030;--rd:#f07070;
+  --g:#5a9e72;--g2:#2d5a3d;--gb:rgba(74,124,89,.08);
+  --b:#6b8fa8;--bb:rgba(107,143,168,.08);
+  --am:#c49a4a;--rd:#b85c4a;
   --sans:'Syne',sans-serif;--mono:'JetBrains Mono',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:13px;padding:1.25rem 1rem 5rem;min-height:100vh}
-.wrap{max-width:860px;margin:0 auto}
+body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:13px;padding:1.5rem 2rem 5rem;min-height:100vh}
+.wrap{width:100%;max-width:100%}
 
 /* HEADER */
 .hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1.75rem;padding-bottom:.875rem;border-bottom:1px solid var(--ln)}
@@ -50,7 +50,7 @@ body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:13px
 .ch.a{color:var(--g2)}.ch.s{color:var(--b)}
 
 /* BRIQUES */
-.brique-row{display:grid;grid-template-columns:1fr 80px 80px 80px 22px;gap:6px;align-items:center;padding:6px 0;border-bottom:1px solid var(--ln)}
+.brique-row{display:grid;grid-template-columns:1fr 100px 100px 100px 50px 22px;gap:6px;align-items:center;padding:6px 0;border-bottom:1px solid var(--ln)}
 .brique-row:last-child{border-bottom:none}
 .brique-row.hdr-row{font-size:10px;color:var(--t3);padding-bottom:4px}
 .bi{background:transparent;border:none;color:var(--t2);font-family:var(--sans);font-size:12px;outline:none;width:100%;padding:0}
@@ -70,16 +70,21 @@ body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:13px
 .fb-del{width:24px;height:24px;background:transparent;border:1px solid var(--ln);border-radius:6px;color:var(--t3);cursor:pointer;font-size:14px;display:grid;place-items:center;flex-shrink:0;transition:color .15s,border-color .15s}
 .fb-del:hover{color:var(--rd);border-color:var(--rd)}
 
-/* LIGNE DE COMPO */
-.comp-row{display:grid;grid-template-columns:1fr 100px 80px 22px;gap:6px;align-items:center;padding:5px 0;border-bottom:1px solid var(--ln)}
+/* LIGNE DE COMPO — prestation | type | prix unitaire+toggle | qté | sous-total | × */
+.comp-row{display:grid;grid-template-columns:1fr 110px 130px 70px 90px 22px;gap:6px;align-items:center;padding:6px 0;border-bottom:1px solid var(--ln)}
 .comp-row:last-child{border-bottom:none}
+.comp-row.comp-hdr{font-size:10px;color:var(--t3);padding-bottom:4px}
 .comp-select{background:var(--bg4);border:1px solid var(--ln);border-radius:5px;color:var(--t1);font-family:var(--sans);font-size:11px;padding:3px 6px;outline:none;width:100%;cursor:pointer}
 .comp-type{background:var(--bg4);border:1px solid var(--ln);border-radius:5px;color:var(--t2);font-family:var(--sans);font-size:10px;padding:3px 6px;outline:none;width:100%;cursor:pointer}
+.comp-unit-wrap{display:flex;align-items:center;gap:4px;justify-content:flex-end}
+.comp-unit{font-family:var(--mono);font-size:10px;color:var(--t3);text-align:right;white-space:nowrap;padding-right:2px}
 .comp-qty{background:var(--bg4);border:1px solid var(--ln);border-radius:5px;color:var(--t1);font-family:var(--mono);font-size:11px;padding:3px 6px;outline:none;text-align:right;width:100%;transition:border-color .15s}
 .comp-qty:focus{border-color:var(--ln2)}
-.comp-cost{font-family:var(--mono);font-size:10px;color:var(--t3);text-align:right;white-space:nowrap}
-
-/* PRIX FORFAIT */
+.comp-cost{font-family:var(--mono);font-size:11px;color:var(--t1);text-align:right;white-space:nowrap;font-weight:500}
+/* toggle réutilisé */
+.utog{display:flex;border:1px solid var(--ln);border-radius:5px;overflow:hidden;flex-shrink:0}
+.ut{padding:3px 6px;font-size:10px;background:transparent;border:none;color:var(--t3);cursor:pointer;font-family:var(--mono);transition:all .15s}
+.ut.on{background:var(--bg5);color:var(--t1)}
 .f-pricing{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--ln);flex-wrap:wrap}
 .f-pricing .item{display:flex;flex-direction:column;gap:3px}
 .f-pricing label{font-size:10px;color:var(--t3)}
@@ -124,7 +129,7 @@ body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:13px
 .tot-bar{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--bg3);border-radius:6px;margin-top:8px}
 .tot-bar .lbl{font-size:11px;color:var(--t2)}
 .tot-bar .val{font-family:var(--mono);font-size:12px;font-weight:500}
-.warn{font-size:10px;color:var(--am);background:rgba(240,176,48,.08);border-radius:6px;padding:5px 9px;margin-top:6px}
+.warn{font-size:10px;color:var(--am);background:rgba(196,154,74,.08);border-radius:6px;padding:5px 9px;margin-top:6px}
 
 /* METRICS */
 .mets{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:8px}
@@ -260,21 +265,39 @@ body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:13px
 <!-- METRICS -->
 <div class="mets" id="mets"></div>
 
-<!-- ⑥ COURBE -->
+<!-- ⑥ COURBES -->
 <div class="aw">
   <div class="ah" onclick="tog(this)">
-    <div class="at"><span class="anum">6</span>Courbe de croissance</div>
+    <div class="at"><span class="anum">6</span>Projections · Sep 2026 → Sep 2027</div>
     <span class="arr">▶</span>
   </div>
   <div class="ab">
-    <div class="ctabs">
-      <button class="ctab on" onclick="setTab('ca',this)">CA mensuel</button>
-      <button class="ctab" onclick="setTab('net',this)">Net par entité</button>
-      <button class="ctab" onclick="setTab('both',this)">Vue combinée</button>
+
+    <!-- COURBE CUMULATIVE -->
+    <div style="font-size:11px;font-weight:500;color:var(--t2);margin-bottom:4px">Trésorerie cumulée & recettes nettes mensuelles</div>
+    <div style="font-size:10px;color:var(--t3);margin-bottom:8px">CA cumulé + recettes nettes après charges — choisir l'entité</div>
+    <div style="display:flex;gap:6px;margin-bottom:10px" id="entity-tabs">
+      <button class="ctab on" onclick="setEntity('m',this)">Artemage</button>
+      <button class="ctab" onclick="setEntity('s',this)">SRG Films</button>
     </div>
-    <div class="leg" id="chart-leg"></div>
-    <div class="cwrap"><canvas id="cChart"></canvas></div>
-    <div style="font-size:10px;color:var(--t3);margin-top:8px">Montée progressive sur 6 mois · ACRE → 22% en sept. 2026</div>
+    <div class="leg" id="leg-cum"></div>
+    <div class="cwrap" style="height:220px"><canvas id="cCum"></canvas></div>
+
+    <div style="font-size:11px;font-weight:500;color:var(--t2);margin-top:24px;margin-bottom:12px">Répartition des recettes / mois</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+      <div>
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--g2);margin-bottom:8px">Artemage</div>
+        <div style="position:relative;width:100%;height:150px"><canvas id="dM"></canvas></div>
+        <div id="det-m" style="margin-top:10px"></div>
+      </div>
+      <div>
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--b);margin-bottom:8px">SRG Films</div>
+        <div style="position:relative;width:100%;height:150px"><canvas id="dS"></canvas></div>
+        <div id="det-s" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <div style="font-size:10px;color:var(--t3);margin-top:14px">Montée progressive 20% → 100% sur 12 mois · Charges déduites selon vos paramètres</div>
   </div>
 </div>
 
@@ -282,8 +305,8 @@ body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:13px
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 const F = n => Math.round(n).toLocaleString('fr-FR') + ' €';
-const STORE = 'artemage_v6';
-let mainChart, chartTab = 'ca', saveTimer;
+const STORE = 'artemage_v8';
+let charts = {}, saveTimer;
 
 // ── DEFAULT STATE ────────────────────────────────────────────────────────────
 
@@ -376,31 +399,55 @@ function save() {
 function uid(){ return '_'+Math.random().toString(36).slice(2,8); }
 function tog(h){ h.classList.toggle('open'); h.nextElementSibling.classList.toggle('open'); }
 
-function briquePrix(b, type, qty) {
-  if(type==='hj') return b.hj * qty;
-  if(type==='j')  return b.j  * qty;
-  if(type==='u')  return b.u  * qty;
+function briquePrix(b, type, qty, ca) {
+  ca = ca || 0;
+  let u;
+  if(type==='hj') u = (b.hjUnit||'€')==='%' ? ca*(b.hj/100) : b.hj;
+  else if(type==='j')  u = (b.jUnit||'€') ==='%' ? ca*(b.j/100)  : b.j;
+  else if(type==='u')  u = (b.uUnit||'€') ==='%' ? ca*(b.u/100)  : b.u;
+  else u = 0;
+  return u * qty;
+}
+
+function unitPrix(c, ca) {
+  ca = ca || 0;
+  // Pour fix, le calcul est fait inline dans renderForfaits
+  if(c.type==='fix') return (c.unit||'€')==='%' ? null : (c.qty||0);
+  const b = ST.briques.find(x=>x.id===c.briqId);
+  if(!b) return 0;
+  if(c.type==='hj') return (b.hjUnit||'€')==='%' ? ca*(b.hj/100) : b.hj;
+  if(c.type==='j')  return (b.jUnit||'€') ==='%' ? ca*(b.j/100)  : b.j;
+  if(c.type==='u')  return (b.uUnit||'€') ==='%' ? ca*(b.u/100)  : b.u;
   return 0;
 }
 
-function forfaitCout(f) {
-  let total = 0;
+function forfaitCout(f, ca) {
+  ca = ca || 0;
+  // Premier passage : total des lignes non-fix pour servir de base aux % fix
+  let baseHorsFix = 0;
   for(const c of f.compo) {
-    if(c.type==='fix') { total += c.qty||0; continue; }
+    if(c.type==='fix') continue;
     if(c.type==='forfait') {
       const ref = ST.forfaits.find(x=>x.id===c.forfaitRef);
-      if(ref) total += forfaitPrix(ref) * (c.qty||1);
-      continue;
+      if(ref) baseHorsFix += forfaitPrix(ref, ca) * (c.qty||1);
+    } else {
+      const b = ST.briques.find(x=>x.id===c.briqId);
+      if(b) baseHorsFix += briquePrix(b, c.type, c.qty||1, ca);
     }
-    const b = ST.briques.find(x=>x.id===c.briqId);
-    if(b) total += briquePrix(b, c.type, c.qty||1);
+  }
+  // Deuxième passage : tout additionner, % fix calculé sur baseHorsFix
+  let total = baseHorsFix;
+  for(const c of f.compo) {
+    if(c.type!=='fix') continue;
+    const isP = (c.unit||'€')==='%';
+    total += isP ? baseHorsFix*(c.qty/100) : (c.qty||0);
   }
   return total;
 }
 
-function forfaitPrix(f) {
+function forfaitPrix(f, ca) {
   if(f.override) return f.overridePrice||0;
-  const cout = forfaitCout(f);
+  const cout = forfaitCout(f, ca||0);
   return cout * (1 + (f.marge||0)/100);
 }
 
@@ -410,12 +457,39 @@ function renderBriques() {
   document.getElementById('briques-list').innerHTML = ST.briques.map(b=>`
     <div class="brique-row">
       <div><input class="bi" value="${b.name}" oninput="ST.briques.find(x=>x.id==='${b.id}').name=this.value;save();renderForfaits();calc()"></div>
-      <input class="bn" type="number" value="${b.hj}" min="0" step="50" oninput="ST.briques.find(x=>x.id==='${b.id}').hj=+this.value;save();calc()">
-      <input class="bn" type="number" value="${b.j}"  min="0" step="50" oninput="ST.briques.find(x=>x.id==='${b.id}').j=+this.value;save();calc()">
-      <input class="bn" type="number" value="${b.u}"  min="0" step="50" oninput="ST.briques.find(x=>x.id==='${b.id}').u=+this.value;save();calc()">
+      <div style="display:flex;gap:3px;align-items:center">
+        <input class="bn" type="number" value="${b.hj}" min="0" step="10" style="flex:1" oninput="ST.briques.find(x=>x.id==='${b.id}').hj=+this.value;save();renderForfaits();calc()">
+        <div class="utog">
+          <button class="ut ${(b.hjUnit||'€')==='€'?'on':''}" onclick="setBUnit('${b.id}','hj','€',this)">€</button>
+          <button class="ut ${(b.hjUnit||'€')==='%'?'on':''}" onclick="setBUnit('${b.id}','hj','%',this)">%</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:3px;align-items:center">
+        <input class="bn" type="number" value="${b.j}" min="0" step="10" style="flex:1" oninput="ST.briques.find(x=>x.id==='${b.id}').j=+this.value;save();renderForfaits();calc()">
+        <div class="utog">
+          <button class="ut ${(b.jUnit||'€')==='€'?'on':''}" onclick="setBUnit('${b.id}','j','€',this)">€</button>
+          <button class="ut ${(b.jUnit||'€')==='%'?'on':''}" onclick="setBUnit('${b.id}','j','%',this)">%</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:3px;align-items:center">
+        <input class="bn" type="number" value="${b.u}" min="0" step="10" style="flex:1" oninput="ST.briques.find(x=>x.id==='${b.id}').u=+this.value;save();renderForfaits();calc()">
+        <div class="utog">
+          <button class="ut ${(b.uUnit||'€')==='€'?'on':''}" onclick="setBUnit('${b.id}','u','€',this)">€</button>
+          <button class="ut ${(b.uUnit||'€')==='%'?'on':''}" onclick="setBUnit('${b.id}','u','%',this)">%</button>
+        </div>
+      </div>
+      <span></span>
       <button class="bdel" onclick="ST.briques=ST.briques.filter(x=>x.id!=='${b.id}');save();renderBriques();renderForfaits();calc()">×</button>
     </div>`).join('');
   document.getElementById('b1').textContent = ST.briques.map(b=>b.name).join(' · ');
+}
+
+function setBUnit(id, field, unit, btn) {
+  const b = ST.briques.find(x=>x.id===id);
+  if(b) b[field+'Unit'] = unit;
+  btn.parentElement.querySelectorAll('.ut').forEach(x=>x.classList.remove('on'));
+  btn.classList.add('on');
+  save(); renderForfaits(); calc();
 }
 
 function addBrique() {
@@ -431,41 +505,78 @@ function briqOptions(selected) {
 }
 
 function typeOptions(briqId, selected) {
-  if(briqId==='_fix') return `<option value="fix">€ fixe</option>`;
+  if(briqId==='_fix') return `<option value="fix">fixe</option>`;
   const b = ST.briques.find(x=>x.id===briqId);
   if(!b) return '';
   let opts = '';
-  if(b.hj) opts += `<option value="hj" ${selected==='hj'?'selected':''}>½ journée</option>`;
-  if(b.j)  opts += `<option value="j"  ${selected==='j' ?'selected':''}>Journée</option>`;
-  if(b.u)  opts += `<option value="u"  ${selected==='u' ?'selected':''}>Unité</option>`;
+  if(b.hj||b.hjUnit) opts += `<option value="hj" ${selected==='hj'?'selected':''}>½ journée</option>`;
+  if(b.j ||b.jUnit)  opts += `<option value="j"  ${selected==='j' ?'selected':''}>Journée</option>`;
+  if(b.u ||b.uUnit)  opts += `<option value="u"  ${selected==='u' ?'selected':''}>Unité</option>`;
   return opts || `<option value="j">Journée</option>`;
 }
 
-function renderForfaits() {
+function renderForfaits(caRef) {
+  caRef = caRef || 0;
   document.getElementById('forfaits-list').innerHTML = ST.forfaits.map(f=>{
-    const cout = forfaitCout(f);
-    const prix = forfaitPrix(f);
+    const cout = forfaitCout(f, caRef);
+    const prix = forfaitPrix(f, caRef);
+
+    const hdr = `<div class="comp-row comp-hdr">
+      <span>Prestation</span><span>Type</span>
+      <span style="text-align:right">Prix unitaire</span>
+      <span style="text-align:right">Qté</span>
+      <span style="text-align:right">Sous-total</span>
+      <span></span>
+    </div>`;
+
     const compoHTML = f.compo.map(c=>{
-      let lineLabel, lineType, lineCost;
+      let lineLabel, lineType, lineUnit, lineCost;
+
       if(c.type==='fix'){
+        const isP = (c.unit||'€')==='%';
+        const prix_forfait = forfaitCout(f, caRef); // pour le % du forfait
+        const val = isP ? prix_forfait*(c.qty/100) : (c.qty||0);
         lineLabel = `<input class="bi" value="${c.label||'Coût fixe'}" style="font-size:11px" oninput="getComp('${f.id}','${c.id}').label=this.value;save();calc()">`;
-        lineType  = `<span class="comp-cost" style="color:var(--t3)">forfait</span>`;
-        lineCost  = c.qty||0;
+        lineType  = `<span style="font-size:10px;color:var(--t3)">fixe</span>`;
+        lineUnit  = `<div class="comp-unit-wrap">
+          <input class="comp-qty" type="number" value="${c.qty}" min="0" step="${isP?1:10}"
+            style="width:58px"
+            oninput="getComp('${f.id}','${c.id}').qty=+this.value;save();renderForfaits();calc()">
+          <div class="utog">
+            <button class="ut ${!isP?'on':''}" onclick="setCompUnit('${f.id}','${c.id}','€',this)">€</button>
+            <button class="ut ${isP?'on':''}"  onclick="setCompUnit('${f.id}','${c.id}','%',this)">%</button>
+          </div>
+        </div>`;
+        lineCost = val;
+        // Pour les lignes fix, on n'affiche pas de colonne qté séparée
+        return `<div class="comp-row">
+          <div>${lineLabel}</div>
+          <div>${lineType}</div>
+          <div style="text-align:right;display:flex;align-items:center;justify-content:flex-end;gap:4px">${lineUnit}</div>
+          <span style="font-size:10px;color:var(--t3);text-align:right">${isP?'du coût':''}</span>
+          <span class="comp-cost">${F(lineCost)}</span>
+          <button class="bdel" onclick="delComp('${f.id}','${c.id}')">×</button>
+        </div>`;
       } else if(c.type==='forfait'){
         const ref = ST.forfaits.find(x=>x.id===c.forfaitRef);
-        lineLabel = `<span style="font-size:11px;color:var(--t2)">${ref?ref.name:'?'} × ${c.qty}</span>`;
-        lineType  = `<span class="comp-cost">×${c.qty}</span>`;
-        lineCost  = ref ? forfaitPrix(ref)*c.qty : 0;
+        lineLabel = `<span style="font-size:11px;color:var(--t2)">${ref?ref.name:'?'}</span>`;
+        lineType  = `<span style="font-size:10px;color:var(--t3)">forfait</span>`;
+        lineUnit  = `<span class="comp-unit">${ref?F(forfaitPrix(ref,caRef)):''}</span>`;
+        lineCost  = ref ? forfaitPrix(ref,caRef)*(c.qty||1) : 0;
       } else {
-        const b = ST.briques.find(x=>x.id===c.briqId);
+        const b  = ST.briques.find(x=>x.id===c.briqId);
+        const up = unitPrix(c, caRef);
         lineLabel = `<select class="comp-select" onchange="getComp('${f.id}','${c.id}').briqId=this.value;getComp('${f.id}','${c.id}').type=this.value==='_fix'?'fix':'j';save();renderForfaits();calc()">${briqOptions(c.briqId)}</select>`;
         lineType  = `<select class="comp-type" onchange="getComp('${f.id}','${c.id}').type=this.value;save();renderForfaits();calc()">${typeOptions(c.briqId,c.type)}</select>`;
-        lineCost  = b ? briquePrix(b,c.type,c.qty) : 0;
+        lineUnit  = `<span class="comp-unit">${up?F(up):''}</span>`;
+        lineCost  = b ? briquePrix(b,c.type,c.qty||1,caRef) : 0;
       }
       return `<div class="comp-row">
-        <div class="cr-lbl">${lineLabel}</div>
+        <div>${lineLabel}</div>
         <div>${lineType}</div>
-        <input class="comp-qty" type="number" value="${c.qty}" min="0" step="0.5" oninput="getComp('${f.id}','${c.id}').qty=+this.value;save();renderForfaits();calc()">
+        <div style="text-align:right">${lineUnit}</div>
+        <input class="comp-qty" type="number" value="${c.qty}" min="0" step="0.5"
+          oninput="getComp('${f.id}','${c.id}').qty=+this.value;save();renderForfaits();calc()">
         <span class="comp-cost">${F(lineCost)}</span>
         <button class="bdel" onclick="delComp('${f.id}','${c.id}')">×</button>
       </div>`;
@@ -477,7 +588,7 @@ function renderForfaits() {
         <span class="f-tag">${F(prix)}</span>
         <button class="fb-del" onclick="ST.forfaits=ST.forfaits.filter(x=>x.id!=='${f.id}');save();renderForfaits();renderVol();calc()">×</button>
       </div>
-      ${compoHTML}
+      ${hdr}${compoHTML}
       <div class="add-row" style="margin-top:8px" onclick="addComp('${f.id}')">+ ligne</div>
       <div class="f-pricing">
         <div class="item"><label>Coût de revient</label><span class="val cost">${F(cout)}</span></div>
@@ -506,8 +617,16 @@ function renderForfaits() {
     </div>`;
   }).join('');
 
-  const prices = ST.forfaits.map(f=>f.name+' '+F(forfaitPrix(f))).join(' · ');
+  const prices = ST.forfaits.map(f=>f.name+' '+F(forfaitPrix(f,caRef))).join(' · ');
   document.getElementById('b2').textContent = prices;
+}
+
+function setCompUnit(fid, cid, unit, btn) {
+  const c = getComp(fid, cid);
+  if(c) c.unit = unit;
+  btn.parentElement.querySelectorAll('.ut').forEach(x=>x.classList.remove('on'));
+  btn.classList.add('on');
+  save(); calc();
 }
 
 function getComp(fid, cid) {
@@ -638,46 +757,54 @@ function addRec(e){
   save(); calc();
 }
 
-// ── CHART ────────────────────────────────────────────────────────────────────
-
-function setTab(t,btn){
-  chartTab=t;
-  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  calc();
-}
-
 // ── MAIN CALC ────────────────────────────────────────────────────────────────
 
 function calc() {
+  // Premier passage à CA=0 pour bootstrapper
   const caMonth = ST.vols.reduce((s,v)=>{
     const f=ST.forfaits.find(x=>x.id===v.forfaitId);
     const el=document.getElementById('vt-'+v.id);
-    if(f){ const t=forfaitPrix(f)*v.qty; if(el) el.textContent=F(t); return s+t; }
+    if(f){ const t=forfaitPrix(f,0)*v.qty; if(el) el.textContent=F(t); return s+t; }
     return s;
   }, 0);
 
-  document.getElementById('ca-tot').textContent = F(caMonth);
-  document.getElementById('hdr-ca').textContent = F(caMonth);
-  document.getElementById('b3').textContent = `${ST.vols.filter(v=>v.qty>0).map(v=>{const f=ST.forfaits.find(x=>x.id===v.forfaitId);return f?v.qty+'× '+f.name:''}).filter(Boolean).join(' · ')} → ${F(caMonth)}`;
+  // Recalcul avec le CA connu (pour les briques en %)
+  const caFinal = ST.vols.reduce((s,v)=>{
+    const f=ST.forfaits.find(x=>x.id===v.forfaitId);
+    if(f){ return s+forfaitPrix(f,caMonth)*v.qty; }
+    return s;
+  }, 0);
+
+  // Mettre à jour les totaux de volume avec caFinal
+  ST.vols.forEach(v=>{
+    const f=ST.forfaits.find(x=>x.id===v.forfaitId);
+    const el=document.getElementById('vt-'+v.id);
+    if(f&&el) el.textContent=F(forfaitPrix(f,caFinal)*v.qty);
+  });
+
+  renderForfaits(caFinal);
+
+  document.getElementById('ca-tot').textContent = F(caFinal);
+  document.getElementById('hdr-ca').textContent = F(caFinal);
+  document.getElementById('b3').textContent = `${ST.vols.filter(v=>v.qty>0).map(v=>{const f=ST.forfaits.find(x=>x.id===v.forfaitId);return f?v.qty+'× '+f.name:''}).filter(Boolean).join(' · ')} → ${F(caFinal)}`;
 
   // Plafond
-  const plf = Math.min(100, Math.round(caMonth*12/77700*100));
+  const plf = Math.min(100, Math.round(caFinal*12/77700*100));
   document.getElementById('plf-pct').textContent = plf+'% du plafond annuel';
   const pf = document.getElementById('plf-fill');
   pf.style.width=plf+'%';
-  pf.style.background=plf>=90?'#f07070':plf>=70?'#f0b030':'#b8e830';
+  pf.style.background=plf>=90?'#b85c4a':plf>=70?'#c49a4a':'#5a9e72';
 
   // Charges
   let totCM=0, totCS=0;
   ST.cM.forEach(c=>{
-    const v=c.unit==='%'?caMonth*(c.val/100):c.val;
+    const v=c.unit==='%'?caFinal*(c.val/100):c.val;
     totCM+=v;
     const el=document.getElementById('cc-'+c.id);
     if(el) el.textContent=c.unit==='%'?F(v):'';
   });
   ST.cS.forEach(c=>{
-    const v=c.unit==='%'?caMonth*(c.val/100):c.val;
+    const v=c.unit==='%'?caFinal*(c.val/100):c.val;
     totCS+=v;
     const el=document.getElementById('cc-'+c.id);
     if(el) el.textContent=c.unit==='%'?F(v):'';
@@ -686,8 +813,8 @@ function calc() {
   document.getElementById('tc-s').textContent='− '+F(totCS);
   document.getElementById('b4').textContent='Artemage − '+F(totCM)+' · SRG − '+F(totCS);
 
-  const netM = Math.max(0,caMonth-totCM);
-  const netS = Math.max(0,caMonth-totCS);
+  const netM = Math.max(0,caFinal-totCM);
+  const netS = Math.max(0,caFinal-totCS);
 
   renderRec('m',netM);
   renderRec('s',netS);
@@ -699,61 +826,145 @@ function calc() {
 
   // Métriques
   document.getElementById('mets').innerHTML=`
-    <div class="met"><div class="lbl">CA mensuel</div><div class="num ca">${F(caMonth)}</div><div class="sub">${ST.vols.filter(v=>v.qty>0).length} forfait(s) actifs</div></div>
+    <div class="met"><div class="lbl">CA mensuel</div><div class="num ca">${F(caFinal)}</div><div class="sub">${ST.vols.filter(v=>v.qty>0).length} forfait(s) actifs</div></div>
     <div class="met"><div class="lbl">Net Marcus</div><div class="num cg">${F(salM)}</div><div class="sub">Après charges</div></div>
     <div class="met"><div class="lbl">Net Sébastien</div><div class="num cb">${F(salS)}</div><div class="sub">Après charges SRG</div></div>
-    <div class="met"><div class="lbl">CA annuel</div><div class="num ca">${F(caMonth*12)}</div><div class="sub">Projection × 12</div></div>
+    <div class="met"><div class="lbl">CA annuel</div><div class="num ca">${F(caFinal*12)}</div><div class="sub">Projection × 12</div></div>
   `;
 
-  // Courbe
-  const labs=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
-  const g=i=>Math.min(1,.3+i*.1);
-  const acre=i=>i<5?1:.89;
-  const dCA   =labs.map((_,i)=>Math.round(caMonth*g(i)));
-  const dNetM =labs.map((_,i)=>Math.round(salM*g(i)*acre(i)));
-  const dNetS =labs.map((_,i)=>Math.round(salS*g(i)));
-  const dSeuil=labs.map(()=>2000);
+  // ── GRAPHIQUES ───────────────────────────────────────────────────────────────
 
-  let datasets,legend;
-  if(chartTab==='ca'){
-    datasets=[
-      {label:'CA Artemage',data:dCA,borderColor:'#b8e830',backgroundColor:'rgba(184,232,48,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
-      {label:'CA SRG',data:dCA,borderColor:'#70b8f0',backgroundColor:'rgba(112,184,240,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:1.5,borderDash:[5,3]},
-    ];
-    legend=[{c:'#b8e830',l:'CA si Artemage facture'},{c:'#70b8f0',l:'CA si SRG facture'}];
-  } else if(chartTab==='net'){
-    datasets=[
-      {label:'Net Marcus',data:dNetM,borderColor:'#b8e830',backgroundColor:'rgba(184,232,48,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
-      {label:'Net Sébastien',data:dNetS,borderColor:'#70b8f0',backgroundColor:'rgba(112,184,240,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
-      {label:'Seuil 2 000 €',data:dSeuil,borderColor:'rgba(240,112,112,.4)',backgroundColor:'transparent',pointRadius:0,borderWidth:1,borderDash:[2,4]},
-    ];
-    legend=[{c:'#b8e830',l:'Net Marcus'},{c:'#70b8f0',l:'Net Sébastien'},{c:'#f07070',l:'Seuil 2 000 €'}];
-  } else {
-    datasets=[
-      {label:'CA',data:dCA,borderColor:'rgba(240,176,48,.6)',backgroundColor:'transparent',tension:.4,pointRadius:0,borderWidth:1.5,borderDash:[4,3]},
-      {label:'Net Marcus',data:dNetM,borderColor:'#b8e830',backgroundColor:'rgba(184,232,48,.07)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
-      {label:'Net Sébastien',data:dNetS,borderColor:'#70b8f0',backgroundColor:'rgba(112,184,240,.06)',fill:true,tension:.4,pointRadius:2,borderWidth:2},
-      {label:'Seuil 2 000 €',data:dSeuil,borderColor:'rgba(240,112,112,.4)',backgroundColor:'transparent',pointRadius:0,borderWidth:1,borderDash:[2,4]},
-    ];
-    legend=[{c:'#f0b030',l:'CA'},{c:'#b8e830',l:'Net Marcus'},{c:'#70b8f0',l:'Net Sébastien'},{c:'#f07070',l:'Seuil 2 000 €'}];
-  }
+  const labs = [
+    'Sep 2026','Oct 2026','Nov 2026','Déc 2026',
+    'Jan 2027','Fév 2027','Mar 2027','Avr 2027',
+    'Mai 2027','Jun 2027','Jul 2027','Aoû 2027','Sep 2027'
+  ];
+  const ramp = i => 0.20 + (0.80/12)*i; // 20% → 100%
 
-  document.getElementById('chart-leg').innerHTML=legend.map(l=>`<span><span class="ldot" style="background:${l.c}"></span>${l.l}</span>`).join('');
-  if(mainChart) mainChart.destroy();
-  mainChart=new Chart(document.getElementById('cChart'),{
-    type:'line',data:{labels:labs,datasets},
+  // CA mensuel
+  const caM_arr = labs.map((_,i) => Math.round(caFinal * ramp(i)));
+  const caS_arr = labs.map((_,i) => Math.round(caFinal * 1.20 * ramp(i)));
+
+  // Charges mensuelles proportionnelles
+  const chgM_arr = labs.map((_,i) => {
+    const ca = caM_arr[i];
+    return ST.cM.reduce((s,c) => s + (c.unit==='%' ? ca*(c.val/100) : c.val), 0);
+  });
+  const chgS_arr = labs.map((_,i) => {
+    const ca = caS_arr[i];
+    return ST.cS.reduce((s,c) => s + (c.unit==='%' ? ca*(c.val/100) : c.val), 0);
+  });
+
+  // Recettes nettes et cumulées
+  const netM_arr = labs.map((_,i) => Math.max(0, caM_arr[i] - chgM_arr[i]));
+  const netS_arr = labs.map((_,i) => Math.max(0, caS_arr[i] - chgS_arr[i]));
+  const cumCA_M  = caM_arr.reduce((a,v,i)=>{ a.push((a[i-1]||0)+v); return a; }, []);
+  const cumCA_S  = caS_arr.reduce((a,v,i)=>{ a.push((a[i-1]||0)+v); return a; }, []);
+  const cumNet_M = netM_arr.reduce((a,v,i)=>{ a.push((a[i-1]||0)+v); return a; }, []);
+  const cumNet_S = netS_arr.reduce((a,v,i)=>{ a.push((a[i-1]||0)+v); return a; }, []);
+
+  const scaleOpts = {
+    x:{ticks:{font:{size:9},color:'#9a9790',maxRotation:45},grid:{color:'rgba(255,255,255,.03)'}},
+    y:{ticks:{callback:v=>v>=1000?(v/1000).toFixed(0)+'k€':v+'€',font:{size:9},color:'#57564f'},grid:{color:'rgba(255,255,255,.04)'},beginAtZero:true}
+  };
+  const grad = (ctx, c1, c2, h) => {
+    const g = ctx.chart.ctx.createLinearGradient(0,0,0,h||200);
+    g.addColorStop(0,c1); g.addColorStop(1,c2); return g;
+  };
+
+  // ① COURBE CUMULATIVE
+  const ent = window._entity || 'm';
+  const isM = ent==='m';
+  const caCum  = isM ? cumCA_M  : cumCA_S;
+  const netCum = isM ? cumNet_M : cumNet_S;
+  const netMon = isM ? netM_arr : netS_arr;
+  const ec = isM ? '#5a9e72' : '#6b8fa8';
+  const ec2= isM ? '#c49a4a' : '#4a8a70';
+
+  document.getElementById('leg-cum').innerHTML = [
+    {c:ec,  l:'CA cumulé'},
+    {c:ec2, l:'Recettes nettes cumulées'},
+    {c:isM?'rgba(90,158,114,.55)':'rgba(112,184,240,.55)', l:'Recettes nettes / mois (axe droit)'},
+  ].map(l=>`<span><span class="ldot" style="background:${l.c}"></span>${l.l}</span>`).join('');
+
+  if(charts.cCum) charts.cCum.destroy();
+  charts.cCum = new Chart(document.getElementById('cCum'), {
+    type:'line',
+    data:{labels:labs, datasets:[
+      {label:'CA cumulé',      data:caCum,  yAxisID:'y',  borderColor:ec,  backgroundColor:'transparent', tension:.4, pointRadius:3, borderWidth:2.5, fill:false},
+      {label:'Recettes nettes cumulées', data:netCum, yAxisID:'y',  borderColor:ec2,
+        backgroundColor: ctx=>grad(ctx,isM?'rgba(196,154,74,.15)':'rgba(74,138,112,.15)','rgba(0,0,0,0)',220),
+        tension:.4, pointRadius:3, borderWidth:2, fill:true},
+      {label:'Recettes nettes / mois',   data:netMon, yAxisID:'y2', borderColor:isM?'rgba(184,232,48,.5)':'rgba(107,143,168,.5)',
+        backgroundColor:'transparent', tension:.4, pointRadius:2, borderWidth:1.5, borderDash:[4,3], fill:false},
+    ]},
     options:{
-      responsive:true,maintainAspectRatio:false,
+      responsive:true, maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+' : '+Math.round(ctx.raw).toLocaleString('fr-FR')+' €'}}},
       scales:{
-        x:{ticks:{font:{size:9},color:'#57564f',maxRotation:45},grid:{color:'rgba(255,255,255,.03)'}},
-        y:{ticks:{callback:v=>v>=1000?(v/1000).toFixed(0)+'k€':v+'€',font:{size:9},color:'#57564f'},grid:{color:'rgba(255,255,255,.04)'}}
-      }
+        x:scaleOpts.x,
+        y:{...scaleOpts.y, position:'left'},
+        y2:{position:'right', ticks:{callback:v=>v>=1000?(v/1000).toFixed(0)+'k€':v+'€',font:{size:9},color:'#57564f'}, grid:{display:false}, beginAtZero:true}
+      },
+      animation:{duration:450}
     }
   });
+
+  // ③ CAMEMBERTS + DÉTAIL mensuel / annuel
+  const pieC  = ['#5a9e72','#c49a4a','#b85c4a','#4a8a70','#7a6a9a','#6b8fa8','#b87040','#6a5a8a'];
+  const pieC2 = ['#5a9010','#c09010','#c03030','#2d6055','#803090','#4090c8','#8a5030','#4a3a70'];
+
+  function buildPie(cArr, rArr, caRef, netRef, colors) {
+    const labels=[], values=[], anValues=[];
+    cArr.forEach(c=>{ const v=c.unit==='%'?caRef*(c.val/100):c.val; if(v>0){labels.push(c.lbl);values.push(Math.round(v));anValues.push(Math.round(v*12));} });
+    rArr.forEach(r=>{ const v=r.unit==='%'?netRef*(r.val/100):r.val; if(v>0){labels.push(r.lbl);values.push(Math.round(v));anValues.push(Math.round(v*12));} });
+    return {labels, values, anValues, colors:colors.slice(0,labels.length)};
+  }
+
+  const pmD = buildPie(ST.cM, ST.rM, caFinal, netM, pieC);
+  const psD = buildPie(ST.cS, ST.rS, caFinal, netS, pieC2);
+
+  if(charts.dM) charts.dM.destroy();
+  if(charts.dS) charts.dS.destroy();
+  const donutCfg = d => ({
+    type:'doughnut',
+    data:{labels:d.labels,datasets:[{data:d.values,backgroundColor:d.colors,borderWidth:0,hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'60%',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.label} : ${ctx.raw.toLocaleString('fr-FR')} €/mois`}}},
+      animation:{duration:450}}
+  });
+  charts.dM = new Chart(document.getElementById('dM'), donutCfg(pmD));
+  charts.dS = new Chart(document.getElementById('dS'), donutCfg(psD));
+
+  // Détail avec colonnes mois / an
+  const detHTML = d => `
+    <div style="display:grid;grid-template-columns:1fr 72px 72px;gap:4px;padding-bottom:5px;border-bottom:1px solid var(--ln2)">
+      <span style="font-size:9px;color:var(--t3)">Poste</span>
+      <span style="font-size:9px;color:var(--t3);text-align:right">/ mois</span>
+      <span style="font-size:9px;color:var(--t3);text-align:right">/ an</span>
+    </div>
+    ${d.labels.map((l,i)=>`
+    <div style="display:grid;grid-template-columns:1fr 72px 72px;gap:4px;padding:5px 0;border-bottom:1px solid var(--ln);align-items:center">
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t2)">
+        <span style="width:7px;height:7px;border-radius:2px;background:${d.colors[i]};flex-shrink:0;display:inline-block"></span>${l}
+      </span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--t1);text-align:right">${d.values[i].toLocaleString('fr-FR')} €</span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--t3);text-align:right">${d.anValues[i].toLocaleString('fr-FR')} €</span>
+    </div>`).join('')}`;
+
+  document.getElementById('det-m').innerHTML = detHTML(pmD);
+  document.getElementById('det-s').innerHTML = detHTML(psD);
 }
 
 // ── INIT ─────────────────────────────────────────────────────────────────────
+
+window._entity = 'm';
+function setEntity(e, btn) {
+  window._entity = e;
+  document.querySelectorAll('#entity-tabs .ctab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  calc();
+}
 
 renderBriques();
 renderForfaits();
